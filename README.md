@@ -68,7 +68,7 @@ SecretSanta/
    ```
 2. Перейти до директорії проєкту:
    ```bash
-   cd secret-santa
+   cd secret_santa
    ```
 3. Встановити залежності:
    ```bash
