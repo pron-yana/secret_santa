@@ -14,7 +14,6 @@ async function requestHandler(req, res) {
   } catch (err) {
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end('Server Error');
-    console.log(err);
   }
 }
 
