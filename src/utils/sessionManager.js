@@ -2,12 +2,15 @@ const sessions = new Map();
 
 export function createSession(user) {
   const sessionId = generateSessionId();
-  sessions.set(sessionId, { username: user.username, createdAt: Date.now() });
+  sessions.set(sessionId, { userid: user.id, createdAt: Date.now() });
   return sessionId;
 }
 
 export function verifySession(sessionId) {
-  return sessions.has(sessionId);
+  if (sessions.has(sessionId)) {
+    return sessions.get(sessionId);
+  }
+  return null;
 }
 
 function generateSessionId() {

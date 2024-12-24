@@ -44,16 +44,38 @@
         </div>
       </div>
     </div>
-
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
+        async function getCurrentUser() {
+          try {
+            const response = await fetch('/api/user', {
+              method: 'GET',
+              credentials: 'include',
+            });
+
+            if (response.ok) {
+              const user = await response.json();
+              console.log('Logged-in user:', user);
+              return user;
+            } else {
+              console.error(
+                'Failed to fetch user info:',
+                await response.text()
+              );
+            }
+          } catch (error) {
+            console.error('Error fetching user info:', error);
+          }
+        }
         const username = localStorage.getItem('username');
+
         if (!username) {
           alert('Ви маєте увійти в систему, щоб брати участь у святі.');
           window.location.href = '/login';
           return;
         }
-
+        const user = await getCurrentUser();
+        console.log(user);
         document.getElementById('username').textContent = username;
 
         const eventId = new URLSearchParams(window.location.search).get('id');
@@ -91,7 +113,7 @@
           const eventId = new URLSearchParams(window.location.search).get('id');
 
           try {
-            const response = await fetch(`/participate-event`, {
+            const response = await fetch(`/api/event/partisipate`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

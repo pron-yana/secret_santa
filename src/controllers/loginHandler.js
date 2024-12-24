@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { createSession, verifySession } from '../utils/sessionManager.js';
 import { createDataFile } from '../utils/createDataFile.js';
+import { parseCookies } from '../utils/parseCookies.js';
 
 export async function handleLogin(req, res, baseDir) {
   let body = '';
@@ -75,16 +76,4 @@ export async function protectRoute(req, res, next) {
   }
 
   await next();
-}
-
-function parseCookies(req) {
-  const rawCookies = req.headers?.cookie || '';
-  const cookies = {};
-
-  rawCookies.split(';').forEach((cookie) => {
-    const [key, value] = cookie.split('=').map((c) => c.trim());
-    if (key && value) cookies[key] = value;
-  });
-
-  return cookies;
 }

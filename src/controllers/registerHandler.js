@@ -1,6 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { createDataFile } from '../utils/createDataFile.js';
 
 export async function handleRegister(req, res, baseDir) {
@@ -45,7 +47,7 @@ export async function handleRegister(req, res, baseDir) {
         return;
       }
 
-      users.push({ username, password });
+      users.push({ username, password, id: uuidv4() });
       await fs.writeFile(usersPath, JSON.stringify(users, null, 2), 'utf-8');
 
       res.writeHead(201, { 'Content-Type': 'application/json' });

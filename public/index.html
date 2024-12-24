@@ -1,12 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/styles/styles.css" rel="stylesheet">
-    <title>Document</title>
-</head>
-<body>
-    data
-</body>
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Головна</title>
+    <link href="/styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="/styles/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="text-center mb-4">
+        <h1>Список Свят</h1>
+      </div>
+
+      <div class="text-center mb-4">
+        <button id="createEventButton" class="btn btn-primary">
+          Створити нове свято
+        </button>
+      </div>
+
+      <ul id="eventsList" class="list-group"></ul>
+    </div>
+
+    <script type="module">
+      import { fetchEvents } from './scripts/fetchEvents.js';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        const eventsList = document.getElementById('eventsList');
+        const createEventButton = document.getElementById('createEventButton');
+
+        // Redirect to create-event page on button click
+        createEventButton.addEventListener('click', () => {
+          window.location.href = '/create-event';
+        });
+
+        // Fetch and display events
+        const events = await fetchEvents();
+
+        if (events.length === 0) {
+          const noEventsMessage = document.createElement('li');
+          noEventsMessage.textContent = 'Наразі немає доступних свят.';
+          noEventsMessage.className = 'list-group-item text-center';
+          eventsList.appendChild(noEventsMessage);
+        } else {
+          events.forEach((event) => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.textContent = `${event.name} - ${event.completed ? 'Завершено' : 'Активне'}`;
+            listItem.style.cursor = 'pointer';
+            listItem.addEventListener('click', () => {
+              window.location.href = `/event?id=${event.id}`;
+            });
+            eventsList.appendChild(listItem);
+          });
+        }
+      });
+    </script>
+  </body>
 </html>
