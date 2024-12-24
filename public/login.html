@@ -1,67 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Логін</title>
-  <link href="/styles/styles.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow">
-          <div class="card-header bg-primary text-white text-center">
-            <h2>Логін</h2>
-          </div>
-          <div class="card-body">
-            <form id="loginForm" method="POST" action="/login">
-              <div class="mb-3">
-                <label for="username" class="form-label">Ім'я користувача</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Пароль</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-              </div>
-              <button type="submit" class="btn btn-primary w-100">Увійти</button>
-            </form>
-          </div>
-          <div class="card-footer text-center">
-            <p>Ще не маєте акаунта? <a href="/register" class="text-primary">Зареєструйтеся тут</a></p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Логін</title>
+    <link href="/styles/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+              <h2>Логін</h2>
+            </div>
+            <div class="card-body">
+              <form id="loginForm" method="POST" action="/login">
+                <div class="mb-3">
+                  <label for="username" class="form-label"
+                    >Ім'я користувача</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Пароль</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                  Увійти
+                </button>
+              </form>
+            </div>
+            <div class="card-footer text-center">
+              <p>
+                Ще не маєте акаунта?
+                <a href="/register" class="text-primary">Зареєструйтеся тут</a>
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-      const formData = new FormData(this);
-      const data = Object.fromEntries(formData.entries());
+    <script>
+      document
+        .getElementById('loginForm')
+        .addEventListener('submit', async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const data = Object.fromEntries(formData.entries());
 
-      try {
-        const response = await fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
+          try {
+            const response = await fetch('/api/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+              alert(result.message);
+              localStorage.setItem('username', data.username);
+              window.location.href = '/';
+            } else {
+              alert(result.message || 'Помилка входу');
+            }
+          } catch (error) {
+            console.error('Помилка:', error);
+            alert('Сталася помилка. Спробуйте ще раз пізніше.');
+          }
         });
-
-        const result = await response.json();
-        if (response.ok) {
-          alert(result.message);
-          window.location.href = '/';
-        } else {
-          alert(result.message || 'Помилка входу');
-        }
-      } catch (error) {
-        console.error('Помилка:', error);
-        alert('Сталася помилка. Спробуйте ще раз пізніше.');
-      }
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

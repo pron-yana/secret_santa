@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Свято</title>
+    <link href="/styles/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+              <h2 id="eventName">Назва свята</h2>
+            </div>
+            <div class="card-body">
+              <p>
+                <strong>Статус:</strong>
+                <span id="eventStatus">Завантаження...</span>
+              </p>
+              <p>
+                <strong>Користувач:</strong>
+                <span id="username">Завантаження...</span>
+              </p>
+
+              <form id="participateForm" class="mt-4">
+                <div class="mb-3">
+                  <label for="wishes" class="form-label">Ваші побажання</label>
+                  <textarea
+                    class="form-control"
+                    id="wishes"
+                    name="wishes"
+                    rows="4"
+                    required
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-success w-100">
+                  Беру участь
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const username = localStorage.getItem('username');
+        if (!username) {
+          alert('Ви маєте увійти в систему, щоб брати участь у святі.');
+          window.location.href = '/login';
+          return;
+        }
+
+        document.getElementById('username').textContent = username;
+
+        const eventId = new URLSearchParams(window.location.search).get('id');
+        if (!eventId) {
+          alert('Ідентифікатор свята не знайдено.');
+          window.location.href = '/';
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/event?id=${eventId}`);
+          const event = await response.json();
+          if (response.ok) {
+            document.getElementById('eventName').textContent = event.name;
+            document.getElementById('eventStatus').textContent = event.completed
+              ? 'Завершено'
+              : 'Активне';
+          } else {
+            alert(event.message || 'Помилка завантаження свята.');
+            window.location.href = '/';
+          }
+        } catch (error) {
+          console.error('Помилка завантаження:', error);
+          alert('Сталася помилка. Спробуйте ще раз пізніше.');
+          window.location.href = '/';
+        }
+      });
+
+      document
+        .getElementById('participateForm')
+        .addEventListener('submit', async function (event) {
+          event.preventDefault();
+          const wishes = document.getElementById('wishes').value;
+          const username = localStorage.getItem('username');
+          const eventId = new URLSearchParams(window.location.search).get('id');
+
+          try {
+            const response = await fetch(`/participate-event`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ username, eventId, wishes }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+              alert(result.message);
+            } else {
+              alert(result.message || 'Помилка участі у святі');
+            }
+          } catch (error) {
+            console.error('Помилка участі:', error);
+            alert('Сталася помилка. Спробуйте ще раз пізніше.');
+          }
+        });
+    </script>
+  </body>
+</html>

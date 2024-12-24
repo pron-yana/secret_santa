@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { handleRegister } from '../controllers/registerHandler.js';
 import { handleLogin, protectRoute } from '../controllers/loginHandler.js';
+import { handleCreateEvent } from '../controllers/event.js';
 
 export async function handleRoutes(req, res, baseDir) {
   const url = req.url;
@@ -9,7 +10,7 @@ export async function handleRoutes(req, res, baseDir) {
 
   try {
     if (method === 'GET') {
-      if (['/', '/home'].includes(url)) {
+      if (url === '/') {
         await protectRoute(req, res, async () => {
           await serveFile(
             res,
@@ -29,6 +30,22 @@ export async function handleRoutes(req, res, baseDir) {
           path.join(baseDir, '../public', 'register.html'),
           'text/html'
         );
+      } else if (url.startsWith('/event')) {
+        await protectRoute(req, res, async () => {
+          await serveFile(
+            res,
+            path.join(baseDir, '../public', 'event.html'),
+            'text/html'
+          );
+        });
+      } else if (url.startsWith('/create-event')) {
+        await protectRoute(req, res, async () => {
+          await serveFile(
+            res,
+            path.join(baseDir, '../public', 'createEvent.html'),
+            'text/html'
+          );
+        });
       } else if (
         url.startsWith('/styles') ||
         url.startsWith('/scripts') ||
@@ -48,6 +65,8 @@ export async function handleRoutes(req, res, baseDir) {
         await handleRegister(req, res, baseDir);
       } else if (url === '/login') {
         await handleLogin(req, res, baseDir);
+      } else if (url === '/create-event') {
+        await handleCreateEvent(req, res, baseDir);
       } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Endpoint Not Found');

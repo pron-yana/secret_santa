@@ -1,7 +1,8 @@
 import http from 'http';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { handleRoutes } from './routes/routes.js';
+import { handleHtmlRoutes } from './routes/htmlRoutes.js';
+import { handleApiRoutes } from './routes/apiRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,13 +11,18 @@ const PORT = 3000;
 
 async function requestHandler(req, res) {
   try {
-    await handleRoutes(req, res, __dirname);
+    if (req.url.startsWith('/api')) {
+      await handleApiRoutes(req, res, __dirname);
+    } else {
+      await handleHtmlRoutes(req, res, __dirname);
+    }
   } catch (err) {
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end('Server Error');
-    console.log(err);
+    console.error(err);
   }
 }
+
 const server = http.createServer(requestHandler);
 
 server.listen(PORT, () => {
