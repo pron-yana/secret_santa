@@ -17,9 +17,8 @@
 | |- htmlRoutes.js (обробка HTML-запитів)
 | |- apiRoutes.js (обробка API-запитів)
 |- Контролери:
-| |- registerHandler.js
-| |- loginHandler.js
-| |- eventHandler.js
+| |- auth.js
+| |- event.js
 | |- user.js
 |- Утиліти:
 | |- sessionManager.js
@@ -43,7 +42,7 @@
 
 Дані форми передаються на сервер через POST-запит.
 
-Контролер registerHandler перевіряє валідність даних.
+Контролер auth перевіряє валідність даних.
 
 Новий користувач додається до users.json із унікальним id.
 
@@ -65,7 +64,7 @@
 
 POST-запит передає дані (назва, рекомендації) на сервер.
 
-Контролер eventHandler створює новий об'єкт події у events.json із полем ownerId.
+Контролер event створює новий об'єкт події у events.json із полем ownerId.
 
 4. Участь у святі
 
