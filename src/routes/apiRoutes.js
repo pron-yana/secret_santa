@@ -1,5 +1,8 @@
-import { handleRegister } from '../controllers/registerHandler.js';
-import { handleLogin, handleLogout } from '../controllers/loginHandler.js';
+import {
+  handleLogin,
+  handleLogout,
+  handleRegister,
+} from '../controllers/auth.js';
 import { protectRoute } from './protectedRoute.js';
 import {
   handleCreateEvent,
