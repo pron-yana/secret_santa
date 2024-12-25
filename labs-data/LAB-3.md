@@ -20,6 +20,7 @@
 | |- registerHandler.js
 | |- loginHandler.js
 | |- eventHandler.js
+| |- user.js
 |- Утиліти:
 | |- sessionManager.js
 | |- parseCookies.js
