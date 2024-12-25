@@ -1,18 +1,19 @@
 import http from 'http';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { connectDB } from './utils/db.js';
 import { handleHtmlRoutes } from './routes/htmlRoutes.js';
 import { handleApiRoutes } from './routes/apiRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const PORT = 3000;
 
 async function requestHandler(req, res) {
   try {
     if (req.url.startsWith('/api')) {
-      await handleApiRoutes(req, res, __dirname);
+      const db = await connectDB();
+      await handleApiRoutes(req, res, __dirname, db);
     } else {
       await handleHtmlRoutes(req, res, __dirname);
     }
@@ -25,6 +26,16 @@ async function requestHandler(req, res) {
 
 const server = http.createServer(requestHandler);
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+async function startServer() {
+  try {
+    await connectDB();
+    server.listen(PORT, () => {
+      console.log(`Server running at http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to connect to the database:', err);
+    process.exit(1);
+  }
+}
+
+startServer();

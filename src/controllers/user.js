@@ -1,26 +1,27 @@
 import { verifySession } from '../utils/sessionManager.js';
-import fs from 'fs/promises';
-import path from 'path';
+import User from '../models/user.js';
 import { parseCookies } from '../utils/parseCookies.js';
 
-export async function handleGetCurrentUser(req, res, baseDir) {
+export async function handleGetCurrentUser(req, res) {
   const cookies = parseCookies(req);
   const sessionId = cookies.sessionId;
 
-  if (!sessionId || !verifySession(sessionId)) {
+  if (!sessionId) {
     res.writeHead(401, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: 'Unauthorized' }));
     return;
   }
 
-  const session = verifySession(sessionId);
-  const usersPath = path.join(baseDir, '../data', 'users.json');
+  const session = await verifySession(sessionId);
+  if (!session) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Unauthorized' }));
+    return;
+  }
 
   try {
-    const usersData = await fs.readFile(usersPath, 'utf-8');
-    const users = JSON.parse(usersData);
+    const user = await User.findById(session.userId);
 
-    const user = users.find((u) => u.id === session.userId);
     if (!user) {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ message: 'User not found' }));
@@ -36,9 +37,9 @@ export async function handleGetCurrentUser(req, res, baseDir) {
   }
 }
 
-export async function handleGetUserById(req, res, baseDir) {
+export async function handleGetUserById(req, res) {
   const urlParts = req.url.split('/');
-  const userId = urlParts[urlParts.length - 1]; // Extract the user ID from the URL
+  const userId = urlParts[urlParts.length - 1];
 
   if (!userId) {
     res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -48,13 +49,8 @@ export async function handleGetUserById(req, res, baseDir) {
     return;
   }
 
-  const usersPath = path.join(baseDir, '../data', 'users.json');
-
   try {
-    const usersData = await fs.readFile(usersPath, 'utf-8');
-    const users = JSON.parse(usersData);
-
-    const user = users.find((u) => u.id === userId);
+    const user = await User.findById(userId);
 
     if (!user) {
       res.writeHead(404, { 'Content-Type': 'application/json' });

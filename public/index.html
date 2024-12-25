@@ -7,7 +7,7 @@
     <link href="/styles/styles.css" rel="stylesheet" />
   </head>
   <body>
-    <div class="text-center mb-4">
+    <div class="m-4 flex justify-content-end">
       <button id="logoutButton" class="btn btn-danger">Вийти</button>
     </div>
     <div class="container mt-5">
@@ -70,7 +70,7 @@
             listItem.textContent = `${event.name} - ${event.completed ? 'Завершено' : 'Активне'}`;
             listItem.style.cursor = 'pointer';
             listItem.addEventListener('click', () => {
-              window.location.href = `/event?id=${event.id}`;
+              window.location.href = `/event?id=${event._id}`;
             });
             eventsList.appendChild(listItem);
           });

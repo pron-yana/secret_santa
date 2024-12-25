@@ -7,6 +7,9 @@
     <link href="/styles/styles.css" rel="stylesheet" />
   </head>
   <body>
+    <div class="m-4 flex justify-content-end">
+      <a href="/">Головна</a>
+    </div>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
@@ -63,13 +66,13 @@
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ ...data, userId: user.id }),
+              body: JSON.stringify({ ...data, userId: user._id }),
             });
 
             const result = await response.json();
             if (response.ok) {
               alert('Cвято успішно створено');
-              window.location.href = `/event?id=${result.event.id}`;
+              window.location.href = `/event?id=${result.event._id}`;
             } else {
               alert(result.message || 'Помилка створення свята');
             }

@@ -1,73 +1,45 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const sessionSchema = new mongoose.Schema({
+  sessionId: { type: String, required: true, unique: true },
+  userId: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  expiresAt: { type: Date, required: true },
+});
 
-const sessionsFilePath = path.join(__dirname, '../../data/sessions.json');
+const Session = mongoose.model('Session', sessionSchema);
 
-export const sessions = new Map();
-
-function ensureFileExists() {
-  const dir = path.dirname(sessionsFilePath);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  if (!fs.existsSync(sessionsFilePath)) {
-    fs.writeFileSync(sessionsFilePath, JSON.stringify([]));
-  }
-}
-
-function loadSessions() {
-  ensureFileExists();
-  const data = fs.readFileSync(sessionsFilePath, 'utf-8');
-  const parsed = JSON.parse(data);
-  parsed.forEach(([key, value]) => sessions.set(key, value));
-}
-
-function saveSessions() {
-  ensureFileExists();
-  const data = JSON.stringify(Array.from(sessions.entries()), null, 2);
-  fs.writeFileSync(sessionsFilePath, data);
-}
-
-loadSessions();
-
-setInterval(saveSessions, 10000);
-process.on('exit', saveSessions);
-
-export function createSession(user) {
+export async function createSession(user) {
   const sessionId = generateSessionId();
-  sessions.set(sessionId, {
-    userId: user.id,
-    createdAt: Date.now(),
-    expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  const session = new Session({
+    sessionId,
+    userId: user._id,
+    expiresAt,
   });
-  saveSessions();
+
+  await session.save();
   return sessionId;
 }
 
-export function verifySession(sessionId) {
-  if (sessions.has(sessionId)) {
-    const session = sessions.get(sessionId);
-    if (session.expiresAt < Date.now()) {
-      sessions.delete(sessionId);
-      saveSessions();
-      return null;
-    }
-    return session;
+export async function verifySession(sessionId) {
+  const session = await Session.findOne({ sessionId });
+
+  if (!session) {
+    return null;
   }
-  return null;
+
+  if (session.expiresAt < Date.now()) {
+    await Session.deleteOne({ sessionId });
+    return null;
+  }
+
+  return session;
 }
 
-export function logoutSession(sessionId) {
-  if (sessions.has(sessionId)) {
-    sessions.delete(sessionId);
-    saveSessions();
-    return true;
-  }
-  return false;
+export async function logoutSession(sessionId) {
+  const result = await Session.deleteOne({ sessionId });
+  return result.deletedCount > 0;
 }
 
 function generateSessionId() {

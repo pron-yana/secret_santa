@@ -7,6 +7,9 @@
     <link href="/styles/styles.css" rel="stylesheet" />
   </head>
   <body>
+    <div class="m-4 flex justify-content-end">
+      <a href="/">Головна</a>
+    </div>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
@@ -118,7 +121,7 @@
               ? 'Завершено'
               : 'Активне';
 
-            if (event.ownerId === user.id) {
+            if (event.ownerId === user._id) {
               document.getElementById('participantCount').style.display =
                 'block';
               document.getElementById('participants').textContent =
@@ -160,7 +163,7 @@
             }
 
             const participant = event.participants?.find(
-              (p) => p.userId === user.id
+              (p) => p.userId === user._id
             );
             if (event.completed) {
               if (!participant) {
@@ -168,12 +171,12 @@
                   'notParticipantFinished'
                 ).style.display = 'block';
               } else {
-                const pair = event.pairs.find((p) => p.giver === user.id);
+                const pair = event.pairs.find((p) => p.giver === user._id);
                 const receiver = await fetchUserById(pair.receiver);
                 document.getElementById('participantFinished').style.display =
                   'block';
                 const receiverParticipant = event.participants?.find(
-                  (p) => p.userId === receiver.id
+                  (p) => p.userId === receiver._id
                 );
                 document.getElementById('giftRecipient').textContent = pair
                   ? receiver.username
@@ -213,7 +216,7 @@
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ userId: user.id, eventId, wishes }),
+              body: JSON.stringify({ userId: user._id, eventId, wishes }),
             });
             const result = await response.json();
             if (response.ok) {
