@@ -3,6 +3,7 @@ import path from 'path';
 import { createSession, verifySession } from '../utils/sessionManager.js';
 import { createDataFile } from '../utils/createDataFile.js';
 import { parseCookies } from '../utils/parseCookies.js';
+import { sessions } from '../utils/sessionManager.js';
 
 export async function handleLogin(req, res, baseDir) {
   let body = '';
@@ -65,15 +66,19 @@ export async function handleLogin(req, res, baseDir) {
   });
 }
 
-export async function protectRoute(req, res, next) {
+export async function handleLogout(req, res) {
   const cookies = parseCookies(req);
   const sessionId = cookies.sessionId;
 
-  if (!sessionId || !verifySession(sessionId)) {
-    res.writeHead(302, { Location: '/login' });
-    res.end();
-    return;
+  if (sessionId) {
+    sessions.delete(sessionId);
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Set-Cookie': 'sessionId=; HttpOnly; Path=/; Max-Age=0',
+    });
+    res.end(JSON.stringify({ message: 'Logout successful' }));
+  } else {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'No session found to log out' }));
   }
-
-  await next();
 }

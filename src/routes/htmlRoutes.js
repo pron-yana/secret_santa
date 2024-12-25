@@ -1,5 +1,5 @@
 import path from 'path';
-import { protectRoute } from '../controllers/loginHandler.js';
+import { protectRoute } from './protectedRoute.js';
 import { serveFile } from '../utils/serveFile.js';
 import { getFileContentType } from '../utils/getFileContentType.js';
 

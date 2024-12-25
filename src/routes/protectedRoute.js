@@ -6,6 +6,7 @@ export async function protectRoute(req, res, next) {
   const sessionId = cookies.sessionId;
 
   if (!sessionId || !verifySession(sessionId)) {
+    console.log('Session invalid or missing. Redirecting to login.');
     res.writeHead(302, { Location: '/login' });
     res.end();
     return;

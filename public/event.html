@@ -103,7 +103,13 @@
         }
 
         try {
-          const response = await fetch(`/api/event?id=${eventId}`);
+          const response = await fetch(`/api/event?id=${eventId}`, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
           const event = await response.json();
 
           if (response.ok) {
@@ -129,6 +135,7 @@
                     try {
                       const finishResponse = await fetch(`/api/event/finish`, {
                         method: 'POST',
+                        credentials: 'include',
                         headers: {
                           'Content-Type': 'application/json',
                         },
@@ -162,9 +169,7 @@
                 ).style.display = 'block';
               } else {
                 const pair = event.pairs.find((p) => p.giver === user.id);
-                console.log(pair, ' pair');
                 const receiver = await fetchUserById(pair.receiver);
-                console.log(receiver, ' receiver');
                 document.getElementById('participantFinished').style.display =
                   'block';
                 const receiverParticipant = event.participants?.find(
@@ -204,6 +209,7 @@
           try {
             const response = await fetch(`/api/event/participate`, {
               method: 'POST',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
               },

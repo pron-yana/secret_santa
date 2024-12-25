@@ -7,6 +7,9 @@
     <link href="/styles/styles.css" rel="stylesheet" />
   </head>
   <body>
+    <div class="text-center mb-4">
+      <button id="logoutButton" class="btn btn-danger">Вийти</button>
+    </div>
     <div class="container mt-5">
       <div class="text-center mb-4">
         <h1>Список Свят</h1>
@@ -25,8 +28,29 @@
       import { fetchEvents } from './scripts/main.js';
 
       document.addEventListener('DOMContentLoaded', async () => {
-        const eventsList = document.getElementById('eventsList');
+        const logoutButton = document.getElementById('logoutButton');
         const createEventButton = document.getElementById('createEventButton');
+        const eventsList = document.getElementById('eventsList');
+
+        // Logout functionality
+        logoutButton.addEventListener('click', async () => {
+          try {
+            const response = await fetch('/api/logout', {
+              method: 'POST',
+              credentials: 'include',
+            });
+
+            if (response.ok) {
+              window.location.href = '/login';
+            } else {
+              const result = await response.json();
+              alert(result.message || 'Помилка виходу.');
+            }
+          } catch (error) {
+            console.error('Помилка виходу:', error);
+            alert('Сталася помилка. Спробуйте ще раз пізніше.');
+          }
+        });
 
         createEventButton.addEventListener('click', () => {
           window.location.href = '/create-event';

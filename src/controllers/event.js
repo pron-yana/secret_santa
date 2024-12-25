@@ -75,10 +75,8 @@ export async function handleCreateEvent(req, res, baseDir) {
       events.push(newEvent);
 
       user.events = user.events || [];
-      user.events.push(newEvent.id);
 
       await fs.writeFile(eventsPath, JSON.stringify(events, null, 2), 'utf-8');
-      await fs.writeFile(usersPath, JSON.stringify(users, null, 2), 'utf-8');
 
       res.writeHead(201, { 'Content-Type': 'application/json' });
       res.end(
@@ -213,9 +211,8 @@ export async function handleGetEvents(req, res, baseDir) {
       return;
     }
 
-    const userId = sessionData.userid;
-
-    const eventsData = await fs.readFile(eventsPath, 'utf-8');
+    const userId = sessionData.userId;
+    const eventsData = (await fs.readFile(eventsPath, 'utf-8')) || [];
     const events = JSON.parse(eventsData);
 
     const filteredEvents = events.filter(

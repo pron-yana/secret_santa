@@ -1,5 +1,5 @@
 import { handleRegister } from '../controllers/registerHandler.js';
-import { handleLogin } from '../controllers/loginHandler.js';
+import { handleLogin, handleLogout } from '../controllers/loginHandler.js';
 import { protectRoute } from './protectedRoute.js';
 import {
   handleCreateEvent,
@@ -22,12 +22,20 @@ export async function handleApiRoutes(req, res, baseDir) {
     await handleRegister(req, res, baseDir);
   } else if (method === 'POST' && url === '/api/login') {
     await handleLogin(req, res, baseDir);
+  } else if (method === 'POST' && url === '/api/logout') {
+    await handleLogout(req, res);
   } else if (method === 'POST' && url === '/api/create-event') {
-    await handleCreateEvent(req, res, baseDir);
+    await protectRoute(req, res, async () => {
+      await handleCreateEvent(req, res, baseDir);
+    });
   } else if (method === 'POST' && url.startsWith('/api/event/participate')) {
-    await handleParticipateEvent(req, res, baseDir);
+    await protectRoute(req, res, async () => {
+      await handleParticipateEvent(req, res, baseDir);
+    });
   } else if (method === 'GET' && url.startsWith('/api/event/list')) {
-    await handleGetEvents(req, res, baseDir);
+    await protectRoute(req, res, async () => {
+      await handleGetEvents(req, res, baseDir);
+    });
   } else if (method === 'POST' && url.startsWith('/api/event/finish')) {
     await protectRoute(req, res, async () => {
       await handleFinishEvent(req, res, baseDir);

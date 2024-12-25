@@ -48,18 +48,18 @@
     </div>
 
     <script type="module">
-      import { getCurrentUser } from './scripts/main.js';
+      import { getCurrentUser, notify } from './scripts/main.js';
       document
         .getElementById('createEventForm')
         .addEventListener('submit', async function (event) {
           event.preventDefault();
           const formData = new FormData(this);
           const data = Object.fromEntries(formData.entries());
-          console.log(data, ' data');
           try {
             const user = await getCurrentUser();
             const response = await fetch('/api/create-event', {
               method: 'POST',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
               },
@@ -68,7 +68,7 @@
 
             const result = await response.json();
             if (response.ok) {
-              alert(result.message);
+              alert('Cвято успішно створено');
               window.location.href = `/event?id=${result.event.id}`;
             } else {
               alert(result.message || 'Помилка створення свята');

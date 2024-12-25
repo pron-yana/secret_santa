@@ -20,7 +20,7 @@ export async function handleGetCurrentUser(req, res, baseDir) {
     const usersData = await fs.readFile(usersPath, 'utf-8');
     const users = JSON.parse(usersData);
 
-    const user = users.find((u) => u.id === session.userid);
+    const user = users.find((u) => u.id === session.userId);
     if (!user) {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ message: 'User not found' }));
