@@ -19,7 +19,7 @@ export async function handleRegister(req, res, baseDir) {
       if (!username || !password) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(
-          JSON.stringify({ message: "Ім'я користувача та пароль обов'язкові" })
+          JSON.stringify({ message: `Ім'я користувача та пароль обов'язкові` })
         );
         return;
       }

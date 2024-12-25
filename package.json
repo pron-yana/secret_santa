@@ -8,7 +8,6 @@
     "test": "echo \"No tests configured\"",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "prepare": "husky",
     "dev": "nodemon src/app.js"
   },
   "lint-staged": {

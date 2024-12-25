@@ -19,7 +19,7 @@ export async function handleCreateEvent(req, res, baseDir) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(
           JSON.stringify({
-            message: "Назва свята є обов'язковими",
+            message: `Назва свята є обов'язковими`,
           })
         );
         return;
@@ -97,7 +97,7 @@ export async function handleGetEvent(req, res, baseDir) {
   const eventId = url.searchParams.get('id');
   if (!eventId) {
     res.writeHead(400, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ message: "ID івенту є обов'язковим" }));
+    res.end(JSON.stringify({ message: `ID івенту є обов'язковим` }));
     return;
   }
 
@@ -137,7 +137,7 @@ export async function handleParticipateEvent(req, res, baseDir) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(
           JSON.stringify({
-            message: "ID івенту та побажання є обов'язковими",
+            message: `ID івенту та побажання є обов'язковими`,
           })
         );
         return;
