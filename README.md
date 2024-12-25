@@ -49,7 +49,7 @@ SecretSanta/
 │   ├── app.js       # Головний файл сервера
 ├── data/            # Локальне збереження даних у форматі JSON
 │   ├── users.json
-│   ├── celebrations.json
+│   ├── events.json
 ├── README.md        # Документація проєкту
 ```
 
@@ -76,7 +76,7 @@ SecretSanta/
    ```
 4. Запустити сервер:
    ```bash
-   node src/app.js
+   npm run dev
    ```
 5. Відкрити застосунок за адресою `http://localhost:3000`.
 
