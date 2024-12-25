@@ -6,9 +6,13 @@ import {
   handleGetEvent,
   handleParticipateEvent,
   handleGetEvents,
+  handleFinishEvent,
 } from '../controllers/event.js';
 
-import { handleGetCurrentUser } from '../controllers/user.js';
+import {
+  handleGetCurrentUser,
+  handleGetUserById,
+} from '../controllers/user.js';
 
 export async function handleApiRoutes(req, res, baseDir) {
   const url = req.url;
@@ -20,22 +24,28 @@ export async function handleApiRoutes(req, res, baseDir) {
     await handleLogin(req, res, baseDir);
   } else if (method === 'POST' && url === '/api/create-event') {
     await handleCreateEvent(req, res, baseDir);
-  } else if (method === 'POST' && url.startsWith('/api/event/partisipate')) {
+  } else if (method === 'POST' && url.startsWith('/api/event/participate')) {
     await handleParticipateEvent(req, res, baseDir);
   } else if (method === 'GET' && url.startsWith('/api/event/list')) {
     await handleGetEvents(req, res, baseDir);
+  } else if (method === 'POST' && url.startsWith('/api/event/finish')) {
+    await protectRoute(req, res, async () => {
+      await handleFinishEvent(req, res, baseDir);
+    });
   } else if (method === 'GET' && url.startsWith('/api/event')) {
     await protectRoute(req, res, async () => {
       await handleGetEvent(req, res, baseDir);
     });
-  } else if (method === 'GET' && url.startsWith('/api/user')) {
+  } else if (method === 'GET' && url.startsWith('/api/user/current')) {
     await protectRoute(req, res, async () => {
       await handleGetCurrentUser(req, res, baseDir);
+    });
+  } else if (method === 'GET' && url.startsWith('/api/user')) {
+    await protectRoute(req, res, async () => {
+      await handleGetUserById(req, res, baseDir);
     });
   } else {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('API Endpoint Not Found');
   }
 }
-
-// handleGetEvents

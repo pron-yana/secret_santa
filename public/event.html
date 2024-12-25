@@ -22,19 +22,13 @@
               <p>
                 <strong>Користувач:</strong>
                 <span id="username">Завантаження...</span>
+                <span id="ownerRemainder" style="display: none"
+                  >(ви є власником цього свята)</span
+                >
               </p>
-              <p id="participantCount" style="display: none">
-                <strong>Кількість учасників:</strong>
-                <span id="participants">0</span>
-              </p>
-
-              <button
-                id="finishEventButton"
-                class="btn btn-danger w-100"
-                style="display: none"
-              >
-                Завершити свято
-              </button>
+              <div id="notParticipantFinished" style="display: none">
+                <p>Свято завершено. Ви не брали участь.</p>
+              </div>
 
               <div id="notParticipant" style="display: none">
                 <form id="participateForm" class="mt-4">
@@ -68,6 +62,23 @@
                   <strong>Ви даруєте подарунок:</strong>
                   <span id="giftRecipient">Завантаження...</span>
                 </p>
+                <p>
+                  <strong>Побажання:</strong>
+                  <span id="giftWish">Завантаження...</span>
+                </p>
+              </div>
+              <div style="margin-top: 20px">
+                <p id="participantCount" style="display: none">
+                  <strong>Кількість учасників:</strong>
+                  <span id="participants">0</span>
+                </p>
+                <button
+                  id="finishEventButton"
+                  class="btn btn-danger w-100"
+                  style="display: none"
+                >
+                  Завершити свято
+                </button>
               </div>
             </div>
           </div>
@@ -75,7 +86,8 @@
       </div>
     </div>
     <script type="module">
-      import { getCurrentUser } from './scripts/main.js';
+      import { getCurrentUser, fetchUserById } from './scripts/main.js';
+
       let user = null;
 
       document.addEventListener('DOMContentLoaded', async () => {
@@ -105,49 +117,71 @@
                 'block';
               document.getElementById('participants').textContent =
                 event.participants.length;
-              document.getElementById('finishEventButton').style.display =
-                'block';
+              document.getElementById('ownerRemainder').style.display =
+                'inline';
+              if (!event.completed) {
+                document.getElementById('finishEventButton').style.display =
+                  'block';
 
-              document
-                .getElementById('finishEventButton')
-                .addEventListener('click', async () => {
-                  try {
-                    const finishResponse = await fetch(`/api/event/finish`, {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({ eventId }),
-                    });
-                    const finishResult = await finishResponse.json();
+                document
+                  .getElementById('finishEventButton')
+                  .addEventListener('click', async () => {
+                    try {
+                      const finishResponse = await fetch(`/api/event/finish`, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ eventId }),
+                      });
+                      const finishResult = await finishResponse.json();
 
-                    if (finishResponse.ok) {
-                      alert('Свято успішно завершено!');
-                      window.location.reload();
-                    } else {
-                      alert(finishResult.message || 'Помилка завершення свята');
+                      if (finishResponse.ok) {
+                        alert('Свято успішно завершено!');
+                        window.location.reload();
+                      } else {
+                        alert(
+                          finishResult.message || 'Помилка завершення свята'
+                        );
+                      }
+                    } catch (error) {
+                      console.error('Помилка завершення:', error);
+                      alert('Сталася помилка. Спробуйте ще раз пізніше.');
                     }
-                  } catch (error) {
-                    console.error('Помилка завершення:', error);
-                    alert('Сталася помилка. Спробуйте ще раз пізніше.');
-                  }
-                });
+                  });
+              }
             }
 
-            const participant = event.participants.find(
+            const participant = event.participants?.find(
               (p) => p.userId === user.id
             );
-
-            if (!participant) {
+            if (event.completed) {
+              if (!participant) {
+                document.getElementById(
+                  'notParticipantFinished'
+                ).style.display = 'block';
+              } else {
+                const pair = event.pairs.find((p) => p.giver === user.id);
+                console.log(pair, ' pair');
+                const receiver = await fetchUserById(pair.receiver);
+                console.log(receiver, ' receiver');
+                document.getElementById('participantFinished').style.display =
+                  'block';
+                const receiverParticipant = event.participants?.find(
+                  (p) => p.userId === receiver.id
+                );
+                document.getElementById('giftRecipient').textContent = pair
+                  ? receiver.username
+                  : 'Невідомо';
+                document.getElementById('giftWish').textContent = pair
+                  ? receiverParticipant.wishes
+                  : 'Невідомо';
+              }
+            } else if (!participant) {
               document.getElementById('notParticipant').style.display = 'block';
-            } else if (!event.completed) {
+            } else {
               document.getElementById('participantActive').style.display =
                 'block';
-            } else {
-              document.getElementById('participantFinished').style.display =
-                'block';
-              document.getElementById('giftRecipient').textContent =
-                participant.giftRecipient || 'Невідомо';
             }
           } else {
             alert(event.message || 'Помилка завантаження свята.');

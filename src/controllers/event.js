@@ -2,13 +2,15 @@ import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
+import { parseCookies } from '../utils/parseCookies.js';
+import { verifySession } from '../utils/sessionManager.js';
+
 export async function handleCreateEvent(req, res, baseDir) {
   let body = '';
 
   req.on('data', (chunk) => {
     body += chunk.toString();
   });
-  console.log(' in create ');
   req.on('end', async () => {
     try {
       const { name, recommendations, userId } = JSON.parse(body);
@@ -67,6 +69,8 @@ export async function handleCreateEvent(req, res, baseDir) {
         recommendations,
         completed: false,
         ownerId: userId,
+        participants: [],
+        pairs: [],
       };
       events.push(newEvent);
 
@@ -110,7 +114,6 @@ export async function handleGetEvent(req, res, baseDir) {
       res.end(JSON.stringify({ message: 'Івент не знайдено' }));
       return;
     }
-    console.log(event, ' founded');
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(event));
   } catch (err) {
@@ -130,7 +133,6 @@ export async function handleParticipateEvent(req, res, baseDir) {
   req.on('end', async () => {
     try {
       const { userId, eventId, wishes } = JSON.parse(body);
-
       if (!userId || !eventId || !wishes) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(
@@ -190,18 +192,122 @@ export async function handleParticipateEvent(req, res, baseDir) {
   });
 }
 
-export async function handleGetEvents(_, res, baseDir) {
+export async function handleGetEvents(req, res, baseDir) {
   const eventsPath = path.join(baseDir, '../data', 'events.json');
 
   try {
+    const cookies = parseCookies(req);
+    const sessionId = cookies.sessionId;
+
+    if (!sessionId) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Unauthorized' }));
+      return;
+    }
+
+    const sessionData = verifySession(sessionId);
+
+    if (!sessionData) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Unauthorized' }));
+      return;
+    }
+
+    const userId = sessionData.userid;
+
     const eventsData = await fs.readFile(eventsPath, 'utf-8');
     const events = JSON.parse(eventsData);
 
+    const filteredEvents = events.filter(
+      (event) =>
+        event.ownerId === userId ||
+        event.participants.some((p) => p.userId === userId)
+    );
+
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(events));
+    res.end(JSON.stringify(filteredEvents));
   } catch (err) {
     console.error('Error fetching events:', err);
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: 'Server error while fetching events' }));
   }
+}
+
+export async function handleFinishEvent(req, res, baseDir) {
+  let body = '';
+
+  req.on('data', (chunk) => {
+    body += chunk.toString();
+  });
+
+  req.on('end', async () => {
+    try {
+      const { eventId } = JSON.parse(body);
+
+      if (!eventId) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(
+          JSON.stringify({ message: 'Ідентифікатор свята є обов’язковим' })
+        );
+        return;
+      }
+
+      const eventsPath = path.join(baseDir, '../data', 'events.json');
+
+      let events = [];
+      try {
+        const eventsData = await fs.readFile(eventsPath, 'utf-8');
+        events = JSON.parse(eventsData);
+      } catch (err) {
+        if (err.code !== 'ENOENT') throw err;
+      }
+
+      const event = events.find((e) => e.id === eventId);
+
+      if (!event) {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'Свято не знайдено' }));
+        return;
+      }
+
+      if (event.completed) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'Свято вже завершено' }));
+        return;
+      }
+
+      const participants = event.participants || [];
+
+      if (participants.length < 2) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(
+          JSON.stringify({
+            message: 'Недостатньо учасників для завершення свята',
+          })
+        );
+        return;
+      }
+
+      const shuffled = participants.sort(() => Math.random() - 0.5);
+      const pairs = [];
+
+      for (let i = 0; i < shuffled.length; i++) {
+        const giver = shuffled[i];
+        const receiver = shuffled[(i + 1) % shuffled.length];
+        pairs.push({ giver: giver.userId, receiver: receiver.userId });
+      }
+
+      event.completed = true;
+      event.pairs = pairs;
+
+      await fs.writeFile(eventsPath, JSON.stringify(events, null, 2), 'utf-8');
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Свято успішно завершено', pairs }));
+    } catch (err) {
+      console.error('Помилка завершення свята:', err);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Сталася помилка сервера' }));
+    }
+  });
 }
