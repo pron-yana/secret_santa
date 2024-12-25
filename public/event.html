@@ -23,60 +23,65 @@
                 <strong>Користувач:</strong>
                 <span id="username">Завантаження...</span>
               </p>
+              <p id="participantCount" style="display: none">
+                <strong>Кількість учасників:</strong>
+                <span id="participants">0</span>
+              </p>
 
-              <form id="participateForm" class="mt-4">
-                <div class="mb-3">
-                  <label for="wishes" class="form-label">Ваші побажання</label>
-                  <textarea
-                    class="form-control"
-                    id="wishes"
-                    name="wishes"
-                    rows="4"
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" class="btn btn-success w-100">
-                  Беру участь
-                </button>
-              </form>
+              <button
+                id="finishEventButton"
+                class="btn btn-danger w-100"
+                style="display: none"
+              >
+                Завершити свято
+              </button>
+
+              <div id="notParticipant" style="display: none">
+                <form id="participateForm" class="mt-4">
+                  <div class="mb-3">
+                    <label for="wishes" class="form-label"
+                      >Ваші побажання</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="wishes"
+                      name="wishes"
+                      rows="4"
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-success w-100">
+                    Беру участь
+                  </button>
+                </form>
+              </div>
+
+              <div id="participantActive" style="display: none">
+                <p>
+                  Ви успішно приєдналися до свята. Очікуйте завершення свята.
+                </p>
+              </div>
+
+              <div id="participantFinished" style="display: none">
+                <p>Свято завершено!</p>
+                <p>
+                  <strong>Ви даруєте подарунок:</strong>
+                  <span id="giftRecipient">Завантаження...</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <script>
+    <script type="module">
+      import { getCurrentUser } from './scripts/main.js';
+      let user = null;
+
       document.addEventListener('DOMContentLoaded', async () => {
-        async function getCurrentUser() {
-          try {
-            const response = await fetch('/api/user', {
-              method: 'GET',
-              credentials: 'include',
-            });
+        user = await getCurrentUser();
 
-            if (response.ok) {
-              const user = await response.json();
-              console.log('Logged-in user:', user);
-              return user;
-            } else {
-              console.error(
-                'Failed to fetch user info:',
-                await response.text()
-              );
-            }
-          } catch (error) {
-            console.error('Error fetching user info:', error);
-          }
-        }
-        const username = localStorage.getItem('username');
-
-        if (!username) {
-          alert('Ви маєте увійти в систему, щоб брати участь у святі.');
-          window.location.href = '/login';
-          return;
-        }
-        const user = await getCurrentUser();
-        console.log(user);
-        document.getElementById('username').textContent = username;
+        document.getElementById('username').textContent = user.username;
 
         const eventId = new URLSearchParams(window.location.search).get('id');
         if (!eventId) {
@@ -88,11 +93,62 @@
         try {
           const response = await fetch(`/api/event?id=${eventId}`);
           const event = await response.json();
+
           if (response.ok) {
             document.getElementById('eventName').textContent = event.name;
             document.getElementById('eventStatus').textContent = event.completed
               ? 'Завершено'
               : 'Активне';
+
+            if (event.ownerId === user.id) {
+              document.getElementById('participantCount').style.display =
+                'block';
+              document.getElementById('participants').textContent =
+                event.participants.length;
+              document.getElementById('finishEventButton').style.display =
+                'block';
+
+              document
+                .getElementById('finishEventButton')
+                .addEventListener('click', async () => {
+                  try {
+                    const finishResponse = await fetch(`/api/event/finish`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ eventId }),
+                    });
+                    const finishResult = await finishResponse.json();
+
+                    if (finishResponse.ok) {
+                      alert('Свято успішно завершено!');
+                      window.location.reload();
+                    } else {
+                      alert(finishResult.message || 'Помилка завершення свята');
+                    }
+                  } catch (error) {
+                    console.error('Помилка завершення:', error);
+                    alert('Сталася помилка. Спробуйте ще раз пізніше.');
+                  }
+                });
+            }
+
+            const participant = event.participants.find(
+              (p) => p.userId === user.id
+            );
+
+            if (!participant) {
+              document.getElementById('notParticipant').style.display = 'block';
+            } else if (!event.completed) {
+              document.getElementById('participantActive').style.display =
+                'block';
+            } else {
+              document.getElementById('participantFinished').style.display =
+                'block';
+              document.getElementById('giftRecipient').textContent =
+                participant.giftRecipient || 'Невідомо';
+            }
           } else {
             alert(event.message || 'Помилка завантаження свята.');
             window.location.href = '/';
@@ -106,24 +162,23 @@
 
       document
         .getElementById('participateForm')
-        .addEventListener('submit', async function (event) {
+        ?.addEventListener('submit', async function (event) {
           event.preventDefault();
           const wishes = document.getElementById('wishes').value;
-          const username = localStorage.getItem('username');
           const eventId = new URLSearchParams(window.location.search).get('id');
 
           try {
-            const response = await fetch(`/api/event/partisipate`, {
+            const response = await fetch(`/api/event/participate`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ username, eventId, wishes }),
+              body: JSON.stringify({ userId: user.id, eventId, wishes }),
             });
-
             const result = await response.json();
             if (response.ok) {
               alert(result.message);
+              window.location.reload();
             } else {
               alert(result.message || 'Помилка участі у святі');
             }

@@ -20,3 +20,22 @@ export async function fetchEvents() {
     return [];
   }
 }
+
+export async function getCurrentUser() {
+  try {
+    const response = await fetch('/api/user', {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (response.ok) {
+      const user = await response.json();
+      console.log('Logged-in user:', user);
+      return user;
+    } else {
+      console.error('Failed to fetch user info:', await response.text());
+    }
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+  }
+}

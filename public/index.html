@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Головна</title>
-    <link href="/styles/bootstrap.min.css" rel="stylesheet" />
     <link href="/styles/styles.css" rel="stylesheet" />
   </head>
   <body>
@@ -23,18 +22,16 @@
     </div>
 
     <script type="module">
-      import { fetchEvents } from './scripts/fetchEvents.js';
+      import { fetchEvents } from './scripts/main.js';
 
       document.addEventListener('DOMContentLoaded', async () => {
         const eventsList = document.getElementById('eventsList');
         const createEventButton = document.getElementById('createEventButton');
 
-        // Redirect to create-event page on button click
         createEventButton.addEventListener('click', () => {
           window.location.href = '/create-event';
         });
 
-        // Fetch and display events
         const events = await fetchEvents();
 
         if (events.length === 0) {

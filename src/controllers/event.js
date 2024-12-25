@@ -11,13 +11,13 @@ export async function handleCreateEvent(req, res, baseDir) {
   console.log(' in create ');
   req.on('end', async () => {
     try {
-      const { name, recommendations, username } = JSON.parse(body);
+      const { name, recommendations, userId } = JSON.parse(body);
 
-      if (!name || !username) {
+      if (!name || !userId) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(
           JSON.stringify({
-            message: "Назва свята та ім'я користувача є обов'язковими",
+            message: "Назва свята є обов'язковими",
           })
         );
         return;
@@ -53,7 +53,7 @@ export async function handleCreateEvent(req, res, baseDir) {
         }
       }
 
-      const user = users.find((u) => u.username === username);
+      const user = users.find((u) => u.id === userId);
       if (!user) {
         res.writeHead(404, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ message: 'Користувача не знайдено' }));
@@ -66,7 +66,7 @@ export async function handleCreateEvent(req, res, baseDir) {
         name,
         recommendations,
         completed: false,
-        ownerUsername: username,
+        ownerId: userId,
       };
       events.push(newEvent);
 
@@ -91,7 +91,6 @@ export async function handleCreateEvent(req, res, baseDir) {
 export async function handleGetEvent(req, res, baseDir) {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const eventId = url.searchParams.get('id');
-  console.log(eventId, ' eventId');
   if (!eventId) {
     res.writeHead(400, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: "ID івенту є обов'язковим" }));
@@ -111,7 +110,7 @@ export async function handleGetEvent(req, res, baseDir) {
       res.end(JSON.stringify({ message: 'Івент не знайдено' }));
       return;
     }
-
+    console.log(event, ' founded');
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(event));
   } catch (err) {
@@ -130,13 +129,13 @@ export async function handleParticipateEvent(req, res, baseDir) {
 
   req.on('end', async () => {
     try {
-      const { username, eventId, wishes } = JSON.parse(body);
+      const { userId, eventId, wishes } = JSON.parse(body);
 
-      if (!username || !eventId || !wishes) {
+      if (!userId || !eventId || !wishes) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(
           JSON.stringify({
-            message: "Ім'я користувача, ID івенту та побажання є обов'язковими",
+            message: "ID івенту та побажання є обов'язковими",
           })
         );
         return;
@@ -164,7 +163,7 @@ export async function handleParticipateEvent(req, res, baseDir) {
 
       event.participants = event.participants || [];
       const alreadyParticipating = event.participants.some(
-        (participant) => participant.username === username
+        (participant) => participant.userId === userId
       );
 
       if (alreadyParticipating) {
@@ -177,7 +176,7 @@ export async function handleParticipateEvent(req, res, baseDir) {
         return;
       }
 
-      event.participants.push({ username, wishes });
+      event.participants.push({ userId, wishes });
 
       await fs.writeFile(eventsPath, JSON.stringify(events, null, 2), 'utf-8');
 
@@ -191,7 +190,7 @@ export async function handleParticipateEvent(req, res, baseDir) {
   });
 }
 
-export async function handleGetEvents(req, res, baseDir) {
+export async function handleGetEvents(_, res, baseDir) {
   const eventsPath = path.join(baseDir, '../data', 'events.json');
 
   try {

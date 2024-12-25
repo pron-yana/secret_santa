@@ -13,17 +13,14 @@ export async function handleGetCurrentUser(req, res, baseDir) {
     return;
   }
 
-  const userId = verifySession(sessionId);
+  const session = verifySession(sessionId);
   const usersPath = path.join(baseDir, '../data', 'users.json');
-
-  console.log(userId, ' userId');
-  console.log(cookies, ' cookies');
 
   try {
     const usersData = await fs.readFile(usersPath, 'utf-8');
     const users = JSON.parse(usersData);
-    const user = users.find((u) => u.id === userId);
 
+    const user = users.find((u) => u.id === session.userid);
     if (!user) {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ message: 'User not found' }));
@@ -31,7 +28,7 @@ export async function handleGetCurrentUser(req, res, baseDir) {
     }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ username: user.username, events: user.events }));
+    res.end(JSON.stringify(user));
   } catch (err) {
     console.error('Error fetching user info:', err);
     res.writeHead(500, { 'Content-Type': 'application/json' });

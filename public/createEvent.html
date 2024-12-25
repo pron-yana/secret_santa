@@ -37,7 +37,6 @@
                     rows="4"
                   ></textarea>
                 </div>
-                <input type="hidden" id="username" name="username" value="" />
                 <button type="submit" class="btn btn-primary w-100">
                   Створити
                 </button>
@@ -48,29 +47,23 @@
       </div>
     </div>
 
-    <script>
-      const username = localStorage.getItem('username');
-      if (!username) {
-        alert('Ви маєте увійти в систему, щоб створити свято.');
-        window.location.href = '/login';
-      } else {
-        document.getElementById('username').value = username;
-      }
-
+    <script type="module">
+      import { getCurrentUser } from './scripts/main.js';
       document
         .getElementById('createEventForm')
         .addEventListener('submit', async function (event) {
           event.preventDefault();
           const formData = new FormData(this);
           const data = Object.fromEntries(formData.entries());
-
+          console.log(data, ' data');
           try {
+            const user = await getCurrentUser();
             const response = await fetch('/api/create-event', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify(data),
+              body: JSON.stringify({ ...data, userId: user.id }),
             });
 
             const result = await response.json();
