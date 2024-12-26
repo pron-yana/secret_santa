@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"No tests configured\"",
+    "test": "vitest",
     "lint": "eslint .",
     "format": "prettier --write .",
     "dev": "nodemon src/app.js"
@@ -28,7 +28,8 @@
     "lint-staged": "^15.2.11",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
-    "typescript-eslint": "^8.18.1"
+    "typescript-eslint": "^8.18.1",
+    "vitest": "^2.1.8"
   },
   "dependencies": {
     "mongodb": "^6.12.0",
