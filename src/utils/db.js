@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
-const uri =
-  'mongodb+srv://nagatolt427:auZwBYVBndtMhEr1@cluster0.r4rmm.mongodb.net/secret_santa?retryWrites=true&w=majority';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const uri = process.env.MONGO_DB_URI;
 
 export async function connectDB() {
   try {
