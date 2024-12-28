@@ -227,3 +227,48 @@ export async function handleFinishEvent(req, res) {
     }
   });
 }
+
+export async function handleDeleteEvent(req, res) {
+  const cookies = parseCookies(req);
+  const sessionId = cookies.sessionId;
+
+  const session = await verifySession(sessionId);
+  if (!session) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Unauthorized' }));
+    return;
+  }
+
+  const userId = session.userId;
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  const eventId = url.searchParams.get('id');
+
+  if (!eventId) {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Event ID is required' }));
+    return;
+  }
+
+  try {
+    const event = await Event.findById(eventId);
+    if (!event) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Event not found' }));
+      return;
+    }
+
+    if (String(event.ownerId) !== userId) {
+      res.writeHead(403, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Permission denied' }));
+      return;
+    }
+    await Event.findByIdAndDelete(eventId);
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Event deleted successfully' }));
+  } catch (error) {
+    console.error('Error deleting event:', error);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Server error' }));
+  }
+}

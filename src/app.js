@@ -26,7 +26,7 @@ async function requestHandler(req, res) {
 
 const server = http.createServer(requestHandler);
 
-async function startServer() {
+export async function startServer() {
   try {
     await connectDB();
     server.listen(PORT, () => {
@@ -39,3 +39,20 @@ async function startServer() {
 }
 
 startServer();
+
+export async function stopServer() {
+  return new Promise((resolve, reject) => {
+    if (server) {
+      server.close((err) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log('Server stopped');
+          resolve();
+        }
+      });
+    } else {
+      resolve();
+    }
+  });
+}

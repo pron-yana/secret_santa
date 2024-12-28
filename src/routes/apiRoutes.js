@@ -10,6 +10,7 @@ import {
   handleParticipateEvent,
   handleGetEvents,
   handleFinishEvent,
+  handleDeleteEvent,
 } from '../controllers/event.js';
 
 import {
@@ -47,6 +48,10 @@ export async function handleApiRoutes(req, res, baseDir) {
     await protectRoute(req, res, async () => {
       await handleGetEvent(req, res, baseDir);
     });
+  } else if (method === 'DELETE' && url.startsWith('/api/event')) {
+    await protectRoute(req, res, async () => {
+      await handleDeleteEvent(req, res, baseDir);
+    });
   } else if (method === 'GET' && url.startsWith('/api/user/current')) {
     await protectRoute(req, res, async () => {
       await handleGetCurrentUser(req, res, baseDir);
@@ -55,8 +60,19 @@ export async function handleApiRoutes(req, res, baseDir) {
     await protectRoute(req, res, async () => {
       await handleGetUserById(req, res, baseDir);
     });
+    if (req.url === '/api/health' && req.method === 'GET') {
+      await protectRoute(req, res, async () => {
+        await handleHealthCheck(req, res);
+      });
+      return;
+    }
   } else {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('API Endpoint Not Found');
   }
+}
+
+async function handleHealthCheck(_, res) {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ status: 'OK' }));
 }

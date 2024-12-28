@@ -13,7 +13,6 @@ export async function handleLogin(req, res) {
   req.on('end', async () => {
     try {
       const { username, password } = JSON.parse(body);
-
       if (!username || !password) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(
@@ -23,7 +22,6 @@ export async function handleLogin(req, res) {
       }
 
       const user = await User.findOne({ username, password });
-
       if (!user) {
         res.writeHead(401, { 'Content-Type': 'application/json' });
         res.end(
