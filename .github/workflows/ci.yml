@@ -43,6 +43,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Enforce Conventional Commits
       - name: Enforce Conventional Commits
         uses: amannn/action-semantic-pull-request@v4
         with:
@@ -56,3 +61,5 @@ jobs:
             perf
             test
           allowMergeCommits: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
