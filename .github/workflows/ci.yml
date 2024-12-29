@@ -40,6 +40,7 @@ jobs:
         run: npm test
 
   enforce-commits:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
     steps:
