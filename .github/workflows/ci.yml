@@ -1,0 +1,58 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  lint-build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run Prettier check
+      - name: Prettier check
+        run: npm run format:check
+
+      # Run Linter
+      - name: Linter check
+        run: npm run lint
+
+      # Run Tests
+      - name: Run Tests
+        run: npm test
+
+  enforce-commits:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enforce Conventional Commits
+        uses: amannn/action-semantic-pull-request@v4
+        with:
+          types: |
+            feat
+            fix
+            chore
+            docs
+            style
+            refactor
+            perf
+            test
+          allowMergeCommits: false
