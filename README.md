@@ -44,7 +44,7 @@
 
 ```
 SecretSanta/
-├── public/          # Статичні файли (HTML, CSS, JS/TS)
+├── public/          # Статичні файли (HTML, CSS, JS)
 ├── src/             # Початковий код
 │   ├── controllers/ # Обробники запитів
 │   ├── routes/      # Логіка маршрутизації
@@ -60,7 +60,8 @@ SecretSanta/
 
 ```
 SecretSanta/
-├── public/          # Статичні файли (HTML, CSS, JS/TS)
+├── public/          # Статичні файли (HTML, CSS, JS)
+├── e2e/             # е2е тестування сценаріїв
 ├── src/             # Початковий код
 │   ├── controllers/ # Обробники запитів
 │   ├── models/      # Моделі даних (робота з MongoDB)
@@ -74,7 +75,6 @@ SecretSanta/
 ### Передумови
 
 1. Встановіть [Node.js](https://nodejs.org/) (остання стабільна версія).
-2. Встановіть [MongoDB](https://www.mongodb.com/)
 
 ### Кроки
 
@@ -99,11 +99,6 @@ SecretSanta/
 ## Змінні середовища
 
 Створіть файл `.env` у кореневій директорії та додайте наступне:
-
-```plaintext
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/secret_santa
-```
 
 ## Приклад використання
 
