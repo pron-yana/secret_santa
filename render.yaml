@@ -1,0 +1,18 @@
+services:
+  - name: secret-santa
+    type: web
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_DB_URI
+        sync: false
+      - key: TEST_USER_NAME
+        sync: false
+      - key: TEST_USER_PASSWORD
+        sync: false
+      - key: TEST_USER_ID
+        sync: false
