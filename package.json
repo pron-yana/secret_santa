@@ -12,7 +12,7 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "e2e": "start-server-and-test start http://localhost:3000 test:e2e",
-    "test:e2e": "testcafe chrome e2e/*.test.js"
+    "test:e2e": "testcafe chrome e2e/*.testcafe.js"
   },
   "lint-staged": {
     "*.js": [
