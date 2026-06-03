@@ -5,89 +5,565 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Свято</title>
     <link href="/styles/styles.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --green-deep:   #162d20;
+        --green-mid:    #264d35;
+        --green-light:  #3a7051;
+        --gold:         #c9a84c;
+        --gold-light:   #e8c97a;
+        --cream:        #faf5eb;
+        --cream-dark:   #f0e8d5;
+        --text-dark:    #1a1a1a;
+        --text-mid:     #4a4a4a;
+        --text-muted:   #7a7264;
+        --white:        #ffffff;
+        --red:          #b94040;
+        --red-light:    #fef0f0;
+        --shadow-warm:  0 8px 40px rgba(22,45,32,0.14);
+        --radius:       14px;
+      }
+
+      body {
+        min-height: 100vh;
+        background-color: var(--cream);
+        background-image:
+          radial-gradient(ellipse at 10% 30%, rgba(58,112,81,0.08) 0%, transparent 50%),
+          radial-gradient(ellipse at 90% 70%, rgba(201,168,76,0.08) 0%, transparent 50%),
+          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23264d35' fill-opacity='0.035'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        font-family: 'Lora', Georgia, serif;
+        padding-bottom: 3rem;
+      }
+
+      /* ── Top Nav ── */
+      .topbar {
+        background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
+        padding: 0 2rem;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 20px rgba(22,45,32,0.25);
+      }
+
+      .topbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .topbar-brand svg { width: 22px; height: 22px; fill: var(--gold); flex-shrink: 0; }
+
+      .topbar-brand span {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--white);
+      }
+
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: rgba(255,255,255,0.75);
+        text-decoration: none;
+        font-size: 0.88rem;
+        font-family: 'Lora', serif;
+        transition: color 0.2s;
+      }
+
+      .btn-back:hover { color: var(--gold-light); }
+      .btn-back svg { width: 16px; height: 16px; fill: currentColor; }
+
+      /* ── Page ── */
+      .page-content {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 0;
+        animation: fadeUp 0.5s ease both;
+      }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ── Event Hero Card ── */
+      .event-hero {
+        background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
+        border-radius: var(--radius);
+        padding: 2rem;
+        margin-bottom: 1.25rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-warm);
+      }
+
+      .event-hero::before {
+        content: '';
+        position: absolute;
+        top: -50px; right: -50px;
+        width: 160px; height: 160px;
+        border-radius: 50%;
+        background: rgba(201,168,76,0.10);
+      }
+
+      .event-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30px; left: 20px;
+        width: 100px; height: 100px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.04);
+      }
+
+      .event-hero-inner { position: relative; z-index: 1; }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 0.9rem;
+      }
+
+      .status-badge .badge-dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .status-active {
+        background: rgba(58,112,81,0.3);
+        color: #7dd3a8;
+        border: 1px solid rgba(58,112,81,0.4);
+      }
+
+      .status-active .badge-dot { background: #7dd3a8; }
+
+      .status-finished {
+        background: rgba(201,168,76,0.2);
+        color: var(--gold-light);
+        border: 1px solid rgba(201,168,76,0.35);
+      }
+
+      .status-finished .badge-dot { background: var(--gold); }
+
+      #eventName {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+
+      .event-meta-row {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.65);
+      }
+
+      .meta-item svg { width: 14px; height: 14px; fill: var(--gold); opacity: 0.8; }
+      .meta-item strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+      .owner-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: rgba(201,168,76,0.18);
+        border: 1px solid rgba(201,168,76,0.3);
+        color: var(--gold-light);
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+      }
+
+      /* ── Cards ── */
+      .card {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-warm);
+        border: 1px solid rgba(201,168,76,0.15);
+        overflow: hidden;
+        margin-bottom: 1.25rem;
+      }
+
+      .card-section-title {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--green-deep);
+        padding: 1.1rem 1.5rem;
+        border-bottom: 1px solid var(--cream-dark);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .card-section-title svg { width: 16px; height: 16px; fill: var(--gold); flex-shrink: 0; }
+
+      .card-body { padding: 1.5rem; }
+
+      /* ── State Blocks ── */
+      .state-block { display: none; }
+
+      .info-panel {
+        background: var(--cream);
+        border: 1px solid var(--cream-dark);
+        border-radius: 10px;
+        padding: 1.25rem 1.5rem;
+      }
+
+      .info-panel p {
+        color: var(--text-mid);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .info-panel p + p { margin-top: 0.6rem; }
+
+      /* Waiting state */
+      .waiting-icon {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .waiting-icon svg { width: 36px; height: 36px; fill: rgba(58,112,81,0.3); }
+
+      .waiting-icon p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      /* Gift reveal */
+      .gift-reveal {
+        background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .gift-reveal::before {
+        content: '';
+        position: absolute;
+        top: -20px; right: -20px;
+        width: 80px; height: 80px;
+        border-radius: 50%;
+        background: rgba(201,168,76,0.12);
+      }
+
+      .gift-reveal-label {
+        font-size: 0.72rem;
+        color: rgba(255,255,255,0.55);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.4rem;
+        position: relative; z-index: 1;
+      }
+
+      .gift-reveal-value {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--white);
+        position: relative; z-index: 1;
+      }
+
+      .gift-wish-box {
+        background: var(--cream);
+        border: 1px solid var(--cream-dark);
+        border-radius: 10px;
+        padding: 1.1rem 1.25rem;
+      }
+
+      .gift-wish-label {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.4rem;
+      }
+
+      #giftWish {
+        color: var(--text-dark);
+        font-size: 0.92rem;
+        line-height: 1.6;
+        font-style: italic;
+      }
+
+      /* Not finished + not participant */
+      .finished-absent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1.5rem 1rem;
+        gap: 0.75rem;
+      }
+
+      .finished-absent svg { width: 40px; height: 40px; fill: var(--cream-dark); }
+      .finished-absent p { color: var(--text-muted); font-size: 0.9rem; }
+
+      /* ── Form ── */
+      .form-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-mid);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--cream-dark);
+        border-radius: 8px;
+        font-family: 'Lora', Georgia, serif;
+        font-size: 0.95rem;
+        color: var(--text-dark);
+        background: var(--cream);
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        outline: none;
+        resize: vertical;
+        -webkit-appearance: none;
+      }
+
+      .form-control:focus {
+        border-color: var(--green-light);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(58,112,81,0.12);
+      }
+
+      .form-control::placeholder { color: #b0a898; }
+      textarea.form-control { min-height: 110px; line-height: 1.6; }
+
+      /* ── Buttons ── */
+      .btn {
+        width: 100%;
+        padding: 0.85rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.15s, box-shadow 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+      .btn:hover { transform: translateY(-1px); }
+      .btn:active { transform: translateY(0); }
+
+      .btn-success {
+        background: linear-gradient(135deg, var(--green-light) 0%, var(--green-mid) 100%);
+        color: var(--white);
+        box-shadow: 0 4px 14px rgba(22,45,32,0.22);
+      }
+
+      .btn-success svg { fill: var(--gold); }
+      .btn-success:hover { box-shadow: 0 6px 20px rgba(22,45,32,0.30); }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #c45252 0%, var(--red) 100%);
+        color: var(--white);
+        box-shadow: 0 4px 14px rgba(185,64,64,0.28);
+      }
+
+      .btn-danger svg { fill: rgba(255,255,255,0.8); }
+      .btn-danger:hover { box-shadow: 0 6px 20px rgba(185,64,64,0.40); }
+
+      /* ── Owner Panel ── */
+      .owner-panel {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-warm);
+        border: 1px solid rgba(201,168,76,0.15);
+        overflow: hidden;
+        margin-bottom: 1.25rem;
+      }
+
+      .stat-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.1rem 1.5rem;
+        border-bottom: 1px solid var(--cream-dark);
+      }
+
+      .stat-icon {
+        width: 40px; height: 40px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .stat-icon svg { width: 18px; height: 18px; fill: var(--gold); }
+
+      .stat-info { flex: 1; }
+      .stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+      .stat-value {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--green-deep);
+        line-height: 1.2;
+      }
+
+      .owner-actions { padding: 1.25rem 1.5rem; }
+    </style>
   </head>
   <body>
-    <div class="m-4 flex justify-content-end">
-      <a href="/">Головна</a>
-    </div>
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <div class="card shadow">
-            <div class="card-header bg-primary text-white text-center">
-              <h2 id="eventName">Назва свята</h2>
+    <nav class="topbar">
+      <div class="topbar-brand">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 7h-1.26A4.5 4.5 0 0 0 9 5.5V6H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zm-8 0a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 2.45 2H11v2.17A2.47 2.47 0 0 1 12 7zm0 2h7v2h-7V9zm0 4h7v2h-7v-2zm-5-4h3v2H7V9zm0 4h3v2H7v-2z"/>
+        </svg>
+        <span>Таємний Санта</span>
+      </div>
+      <a href="/" class="btn-back">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Головна
+      </a>
+    </nav>
+
+    <div class="page-content">
+
+      <!-- Hero -->
+      <div class="event-hero">
+        <div class="event-hero-inner">
+          <div id="statusBadge" class="status-badge status-active">
+            <span class="badge-dot"></span>
+            <span id="eventStatus">Завантаження...</span>
+          </div>
+          <h2 id="eventName">Назва свята</h2>
+          <div class="event-meta-row">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+              <span id="username">Завантаження...</span>
             </div>
-            <div class="card-body">
-              <p>
-                <strong>Статус:</strong>
-                <span id="eventStatus">Завантаження...</span>
-              </p>
-              <p>
-                <strong>Користувач:</strong>
-                <span id="username">Завантаження...</span>
-                <span id="ownerRemainder" style="display: none"
-                  >(ви є власником цього свята)</span
-                >
-              </p>
-              <div id="notParticipantFinished" style="display: none">
-                <p>Свято завершено. Ви не брали участь.</p>
-              </div>
-
-              <div id="notParticipant" style="display: none">
-                <form id="participateForm" class="mt-4">
-                  <div class="mb-3">
-                    <label for="wishes" class="form-label"
-                      >Ваші побажання</label
-                    >
-                    <textarea
-                      class="form-control"
-                      id="wishes"
-                      name="wishes"
-                      rows="4"
-                      required
-                    ></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-success w-100">
-                    Беру участь
-                  </button>
-                </form>
-              </div>
-
-              <div id="participantActive" style="display: none">
-                <p>
-                  Ви успішно приєдналися до свята. Очікуйте завершення свята.
-                </p>
-              </div>
-
-              <div id="participantFinished" style="display: none">
-                <p>Свято завершено!</p>
-                <p>
-                  <strong>Ви даруєте подарунок:</strong>
-                  <span id="giftRecipient">Завантаження...</span>
-                </p>
-                <p>
-                  <strong>Побажання:</strong>
-                  <span id="giftWish">Завантаження...</span>
-                </p>
-              </div>
-              <div style="margin-top: 20px">
-                <p id="participantCount" style="display: none">
-                  <strong>Кількість учасників:</strong>
-                  <span id="participants">0</span>
-                </p>
-                <button
-                  id="finishEventButton"
-                  class="btn btn-danger w-100"
-                  style="display: none"
-                >
-                  Завершити свято
-                </button>
-              </div>
-            </div>
+            <span id="ownerRemainder" class="owner-tag" style="display:none">
+              👑 Власник
+            </span>
           </div>
         </div>
       </div>
-    </div>
+
+      <!-- Owner Panel (participants count + finish button) -->
+      <div id="ownerPanel" class="owner-panel" style="display:none">
+        <div class="stat-row" id="participantCountRow" style="display:none">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Учасників</div>
+            <div class="stat-value" id="participants">0</div>
+          </div>
+        </div>
+        <div class="owner-actions">
+          <button id="finishEventButton" class="btn btn-danger" style="display:none">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            Завершити свято
+          </button>
+        </div>
+      </div>
+
+      <!-- Participant States Card -->
+      <div class="card">
+        <div class="card-section-title">
+          <svg viewBox="0 0 24 24"><path d="M20 7h-1.26A4.5 4.5 0 0 0 9 5.5V6H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zm-8 0a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 2.45 2H11v2.17A2.47 2.47 0 0 1 12 7z"/></svg>
+          Ваш статус участі
+        </div>
+        <div class="card-body">
+
+          <!-- Not participant, event finished -->
+          <div id="notParticipantFinished" class="state-block">
+            <div class="finished-absent">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              <p>Свято завершено. Ви не брали участь у цьому святі.</p>
+            </div>
+          </div>
+
+          <!-- Not participant, event active → join form -->
+          <div id="notParticipant" class="state-block">
+            <form id="participateForm">
+              <div style="margin-bottom:1rem">
+                <label for="wishes" class="form-label">Ваші побажання</label>
+                <textarea
+                  class="form-control"
+                  id="wishes"
+                  name="wishes"
+                  rows="4"
+                  placeholder="Що б ви хотіли отримати у подарунок?"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-success">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Беру участь
+              </button>
+            </form>
+          </div>
+
+          <!-- Participant, event active → waiting -->
+          <div id="participantActive" class="state-block">
+            <div class="waiting-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 5h2v6l5.25 3.15-.75 1.23L11 14V7z"/></svg>
+              <p>Ви успішно приєдналися до свята.<br>Очікуйте, поки власник завершить свято.</p>
+            </div>
+          </div>
+
+          <!-- Participant, event finished → show pair -->
+          <div id="participantFinished" class="state-block">
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Свято завершено! Ви даруєте подарунок:</p>
+            <div class="gift-reveal">
+              <div class="gift-reveal-label">Отримувач подарунка</div>
+              <div class="gift-reveal-value" id="giftRecipient">Завантаження...</div>
+            </div>
+            <div class="gift-wish-box">
+              <div class="gift-wish-label">Побажання</div>
+              <div id="giftWish">Завантаження...</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+
     <script type="module">
       import { getCurrentUser, fetchUserById } from './scripts/main.js';
 
@@ -117,20 +593,27 @@
 
           if (response.ok) {
             document.getElementById('eventName').textContent = event.name;
-            document.getElementById('eventStatus').textContent = event.completed
-              ? 'Завершено'
-              : 'Активне';
+
+            const statusBadge = document.getElementById('statusBadge');
+            const statusText = document.getElementById('eventStatus');
+            if (event.completed) {
+              statusText.textContent = 'Завершено';
+              statusBadge.classList.remove('status-active');
+              statusBadge.classList.add('status-finished');
+            } else {
+              statusText.textContent = 'Активне';
+            }
 
             if (event.ownerId === user._id) {
-              document.getElementById('participantCount').style.display =
-                'block';
+              document.getElementById('ownerPanel').style.display = 'block';
+              document.getElementById('participantCountRow').style.display = 'flex';
               document.getElementById('participants').textContent =
                 event.participants.length;
               document.getElementById('ownerRemainder').style.display =
-                'inline';
+                'inline-flex';
               if (!event.completed) {
                 document.getElementById('finishEventButton').style.display =
-                  'block';
+                  'flex';
 
                 document
                   .getElementById('finishEventButton')

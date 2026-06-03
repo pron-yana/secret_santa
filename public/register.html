@@ -5,51 +5,260 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Реєстрація</title>
     <link href="/styles/styles.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --green-deep:   #162d20;
+        --green-mid:    #264d35;
+        --green-light:  #3a7051;
+        --gold:         #c9a84c;
+        --gold-light:   #e8c97a;
+        --cream:        #faf5eb;
+        --cream-dark:   #f0e8d5;
+        --text-dark:    #1a1a1a;
+        --text-mid:     #4a4a4a;
+        --text-muted:   #7a7264;
+        --white:        #ffffff;
+        --shadow-warm:  0 8px 40px rgba(22,45,32,0.18);
+        --radius:       14px;
+      }
+
+      body {
+        min-height: 100vh;
+        background-color: var(--cream);
+        background-image:
+          radial-gradient(ellipse at 80% 50%, rgba(58,112,81,0.10) 0%, transparent 60%),
+          radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.10) 0%, transparent 50%),
+          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23264d35' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        font-family: 'Lora', Georgia, serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+      }
+
+      .auth-wrapper {
+        width: 100%;
+        max-width: 440px;
+        animation: fadeUp 0.6s ease both;
+      }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      .brand {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .brand-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+        border-radius: 50%;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 20px rgba(22,45,32,0.25);
+      }
+
+      .brand-icon svg { width: 30px; height: 30px; fill: var(--gold); }
+
+      .brand h1 {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--green-deep);
+        letter-spacing: -0.01em;
+      }
+
+      .brand p { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.35rem; }
+
+      .card {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-warm);
+        border: 1px solid rgba(201,168,76,0.18);
+        overflow: hidden;
+      }
+
+      .card-header {
+        background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
+        padding: 1.75rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-header::before {
+        content: '';
+        position: absolute;
+        top: -30px; right: -30px;
+        width: 100px; height: 100px;
+        border-radius: 50%;
+        background: rgba(201,168,76,0.12);
+      }
+
+      .card-header::after {
+        content: '';
+        position: absolute;
+        bottom: -20px; left: -20px;
+        width: 70px; height: 70px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+      }
+
+      .card-header h2 {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--white);
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-header .gold-line {
+        display: block;
+        width: 40px;
+        height: 2px;
+        background: var(--gold);
+        margin: 0.6rem auto 0;
+        border-radius: 2px;
+      }
+
+      .card-body { padding: 2rem; }
+
+      .form-group { margin-bottom: 1.4rem; }
+
+      .form-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-mid);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        font-family: 'Lora', serif;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--cream-dark);
+        border-radius: 8px;
+        font-family: 'Lora', Georgia, serif;
+        font-size: 0.95rem;
+        color: var(--text-dark);
+        background: var(--cream);
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      .form-control:focus {
+        border-color: var(--green-light);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(58,112,81,0.12);
+      }
+
+      .form-control::placeholder { color: #b0a898; }
+
+      .password-hint {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 0.4rem;
+      }
+
+      .btn-primary {
+        width: 100%;
+        padding: 0.85rem 1.5rem;
+        background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-deep) 100%);
+        color: var(--white);
+        border: none;
+        border-radius: 8px;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        transition: transform 0.15s, box-shadow 0.15s;
+        box-shadow: 0 4px 14px rgba(22,45,32,0.22);
+        position: relative;
+        overflow: hidden;
+        margin-top: 0.5rem;
+      }
+
+      .btn-primary::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, transparent 60%);
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(22,45,32,0.30); }
+      .btn-primary:hover::after { opacity: 1; }
+      .btn-primary:active { transform: translateY(0); }
+
+      .card-footer {
+        background: var(--cream);
+        border-top: 1px solid var(--cream-dark);
+        padding: 1.1rem 2rem;
+        text-align: center;
+      }
+
+      .card-footer p { font-size: 0.88rem; color: var(--text-muted); }
+
+      .card-footer a {
+        color: var(--green-mid);
+        font-weight: 500;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(58,112,81,0.3);
+        transition: color 0.2s, border-color 0.2s;
+      }
+
+      .card-footer a:hover { color: var(--gold); border-color: var(--gold); }
+    </style>
   </head>
   <body>
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card shadow">
-            <div class="card-header bg-primary text-white text-center">
-              <h2>Реєстрація</h2>
+    <div class="auth-wrapper">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 7h-1.26A4.5 4.5 0 0 0 9 5.5V6H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zm-8 0a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 2.45 2H11v2.17A2.47 2.47 0 0 1 12 7zm0 2h7v2h-7V9zm0 4h7v2h-7v-2zm-5-4h3v2H7V9zm0 4h3v2H7v-2z"/>
+          </svg>
+        </div>
+        <h1>Таємний Санта</h1>
+        <p>Створіть свій акаунт</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Реєстрація</h2>
+          <span class="gold-line"></span>
+        </div>
+        <div class="card-body">
+          <form id="registerForm" method="POST" action="/register">
+            <div class="form-group mb-3">
+              <label for="username" class="form-label">Ім'я користувача</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Оберіть ім'я" required />
             </div>
-            <div class="card-body">
-              <form id="registerForm" method="POST" action="/register">
-                <div class="mb-3">
-                  <label for="username" class="form-label"
-                    >Ім'я користувача</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    name="username"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Пароль</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    name="password"
-                    required
-                  />
-                </div>
-                <button type="submit" class="btn btn-primary w-100">
-                  Зареєструватися
-                </button>
-              </form>
+            <div class="form-group mb-3">
+              <label for="password" class="form-label">Пароль</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required />
+              <p class="password-hint">Мінімум 6 символів</p>
             </div>
-            <div class="card-footer text-center">
-              <p>
-                Вже маєте акаунт?
-                <a href="/login" class="text-primary">Увійдіть тут</a>
-              </p>
-            </div>
-          </div>
+            <button type="submit" class="btn btn-primary">Зареєструватися</button>
+          </form>
+        </div>
+        <div class="card-footer">
+          <p>Вже маєте акаунт? <a href="/login">Увійдіть тут</a></p>
         </div>
       </div>
     </div>
