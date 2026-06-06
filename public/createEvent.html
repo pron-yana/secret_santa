@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Створити Свято</title>
+    <link href="/styles/styles.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet" />
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,30 +45,41 @@
         align-items: center;
         justify-content: space-between;
         box-shadow: 0 2px 20px rgba(22,45,32,0.25);
-        position: sticky;
-        top: 0;
-        z-index: 100;
       }
 
-      .topbar-brand { display: flex; align-items: center; gap: 0.65rem; }
+      .topbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
       .topbar-brand svg { width: 22px; height: 22px; fill: var(--gold); flex-shrink: 0; }
+
       .topbar-brand span {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.15rem; font-weight: 700; color: var(--white);
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--white);
       }
 
       .btn-back {
-        display: inline-flex; align-items: center; gap: 0.4rem;
-        color: rgba(255,255,255,0.75); text-decoration: none;
-        font-size: 0.88rem; font-family: 'Lora', serif;
-        transition: color 0.2s; letter-spacing: 0.02em;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: rgba(255,255,255,0.75);
+        text-decoration: none;
+        font-size: 0.88rem;
+        font-family: 'Lora', serif;
+        transition: color 0.2s;
+        letter-spacing: 0.02em;
       }
+
       .btn-back:hover { color: var(--gold-light); }
       .btn-back svg { width: 16px; height: 16px; fill: currentColor; }
 
       /* ── Page ── */
       .page-content {
-        max-width: 680px;
+        max-width: 560px;
         margin: 0 auto;
         padding: 2.5rem 1.25rem 0;
         animation: fadeUp 0.5s ease both;
@@ -79,12 +91,24 @@
       }
 
       .page-eyebrow {
-        display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
       }
-      .page-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+      .page-eyebrow .dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
       .page-eyebrow span {
-        font-size: 0.78rem; font-weight: 500; color: var(--text-muted);
-        text-transform: uppercase; letter-spacing: 0.1em;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
       }
 
       .card {
@@ -93,229 +117,150 @@
         box-shadow: var(--shadow-warm);
         border: 1px solid rgba(201,168,76,0.15);
         overflow: hidden;
-        margin-bottom: 1.25rem;
       }
 
       .card-header {
         background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
         padding: 2rem 2rem 1.75rem;
-        position: relative; overflow: hidden;
+        position: relative;
+        overflow: hidden;
       }
+
       .card-header::before {
-        content: ''; position: absolute; top: -40px; right: -40px;
-        width: 130px; height: 130px; border-radius: 50%;
+        content: '';
+        position: absolute;
+        top: -40px; right: -40px;
+        width: 130px; height: 130px;
+        border-radius: 50%;
         background: rgba(201,168,76,0.10);
       }
+
       .card-header::after {
-        content: ''; position: absolute; bottom: -25px; left: 40px;
-        width: 80px; height: 80px; border-radius: 50%;
+        content: '';
+        position: absolute;
+        bottom: -25px; left: 40px;
+        width: 80px; height: 80px;
+        border-radius: 50%;
         background: rgba(255,255,255,0.04);
       }
 
       .card-header-inner {
-        position: relative; z-index: 1;
-        display: flex; align-items: center; gap: 1rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
       }
 
       .header-icon {
-        width: 52px; height: 52px; border-radius: 12px;
+        width: 52px; height: 52px;
+        border-radius: 12px;
         background: rgba(201,168,76,0.18);
         border: 1px solid rgba(201,168,76,0.3);
-        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
       }
+
       .header-icon svg { width: 24px; height: 24px; fill: var(--gold); }
 
       .card-header h2 {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1.2;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.2;
       }
-      .card-header p { color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 0.25rem; }
+
+      .card-header p {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+      }
 
       .card-body { padding: 2rem; }
 
       .form-group { margin-bottom: 1.5rem; }
 
       .form-label {
-        display: block; font-size: 0.82rem; font-weight: 500;
-        color: var(--text-mid); letter-spacing: 0.06em;
-        text-transform: uppercase; margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-mid);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-hint {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 0.4rem;
       }
 
       .form-control {
-        width: 100%; padding: 0.75rem 1rem;
-        border: 1.5px solid var(--cream-dark); border-radius: 8px;
-        font-family: 'Lora', Georgia, serif; font-size: 0.95rem;
-        color: var(--text-dark); background: var(--cream);
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--cream-dark);
+        border-radius: 8px;
+        font-family: 'Lora', Georgia, serif;
+        font-size: 0.95rem;
+        color: var(--text-dark);
+        background: var(--cream);
         transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-        outline: none; -webkit-appearance: none;
+        outline: none;
+        -webkit-appearance: none;
+        resize: vertical;
       }
+
       .form-control:focus {
-        border-color: var(--green-light); background: var(--white);
+        border-color: var(--green-light);
+        background: var(--white);
         box-shadow: 0 0 0 3px rgba(58,112,81,0.12);
       }
+
       .form-control::placeholder { color: #b0a898; }
 
-      .divider { height: 1px; background: var(--cream-dark); margin: 0.5rem 0 1.5rem; }
+      textarea.form-control { min-height: 120px; line-height: 1.6; }
 
-      /* ── Questionnaire ── */
-      .quiz-header {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;
+      .divider {
+        height: 1px;
+        background: var(--cream-dark);
+        margin: 0.5rem 0 1.5rem;
       }
 
-      .quiz-title-group { display: flex; align-items: center; gap: 0.6rem; }
-      .quiz-title-group svg { width: 20px; height: 20px; fill: var(--gold); flex-shrink: 0; }
-      .quiz-title {
+      .btn-primary {
+        width: 100%;
+        padding: 0.9rem 1.5rem;
+        background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-deep) 100%);
+        color: var(--white);
+        border: none;
+        border-radius: 8px;
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.1rem; font-weight: 600; color: var(--green-deep);
-      }
-
-      .quiz-progress-wrap { display: flex; align-items: center; gap: 0.75rem; }
-      .quiz-count {
-        font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;
-        font-variant-numeric: tabular-nums;
-      }
-      .quiz-count strong { color: var(--green-mid); }
-
-      .progress-bar-track {
-        width: 120px; height: 6px; background: var(--cream-dark);
-        border-radius: 3px; overflow: hidden;
-      }
-      .progress-bar-fill {
-        height: 100%; width: 0%;
-        background: linear-gradient(90deg, var(--green-light), var(--gold));
-        border-radius: 3px;
-        transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
-      }
-
-      /* Category tabs */
-      .category-tabs {
-        display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem;
-      }
-
-      .cat-tab {
-        padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.75rem;
-        font-weight: 500; cursor: pointer; border: 1.5px solid var(--cream-dark);
-        background: var(--cream); color: var(--text-muted);
-        transition: all 0.2s; letter-spacing: 0.03em; white-space: nowrap;
-      }
-      .cat-tab:hover { border-color: var(--green-light); color: var(--green-mid); }
-      .cat-tab.active {
-        background: var(--green-deep); border-color: var(--green-deep);
-        color: var(--white); box-shadow: 0 2px 8px rgba(22,45,32,0.2);
-      }
-      .cat-tab .cat-check {
-        display: inline-block; width: 6px; height: 6px;
-        border-radius: 50%; background: var(--gold); margin-right: 0.3rem;
-        opacity: 0; transition: opacity 0.2s;
-        vertical-align: middle; position: relative; top: -1px;
-      }
-      .cat-tab.has-answers .cat-check { opacity: 1; }
-
-      /* Questions panel */
-      .questions-panel {
-        background: var(--cream);
-        border: 1.5px solid var(--cream-dark);
-        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        transition: transform 0.15s, box-shadow 0.15s;
+        box-shadow: 0 4px 14px rgba(22,45,32,0.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        position: relative;
         overflow: hidden;
       }
 
-      .question-row {
-        display: flex; align-items: center;
-        padding: 0.85rem 1.1rem;
-        border-bottom: 1px solid var(--cream-dark);
-        gap: 0.75rem;
-        transition: background 0.15s;
-      }
-      .question-row:last-child { border-bottom: none; }
-      .question-row:hover { background: rgba(201,168,76,0.06); }
-
-      .q-num {
-        font-size: 0.72rem; color: var(--text-muted);
-        min-width: 26px; text-align: right;
-        font-variant-numeric: tabular-nums;
-        flex-shrink: 0;
-      }
-
-      .q-text {
-        flex: 1; font-size: 0.9rem; color: var(--text-dark); line-height: 1.4;
-      }
-
-      .q-toggle {
-        display: flex; gap: 0.35rem; flex-shrink: 0;
-      }
-
-      .toggle-btn {
-        padding: 0.3rem 0.7rem;
-        border-radius: 6px;
-        font-size: 0.78rem; font-weight: 500;
-        cursor: pointer; border: 1.5px solid transparent;
-        transition: all 0.15s; font-family: 'Lora', serif;
-      }
-
-      .toggle-yes {
-        background: rgba(58,112,81,0.08);
-        border-color: rgba(58,112,81,0.2);
-        color: var(--green-light);
-      }
-      .toggle-yes:hover, .toggle-yes.selected {
-        background: var(--green-light);
-        border-color: var(--green-light);
-        color: var(--white);
-        box-shadow: 0 2px 8px rgba(58,112,81,0.3);
-      }
-
-      .toggle-no {
-        background: rgba(185,64,64,0.06);
-        border-color: rgba(185,64,64,0.18);
-        color: #b94040;
-      }
-      .toggle-no:hover, .toggle-no.selected {
-        background: #b94040;
-        border-color: #b94040;
-        color: var(--white);
-        box-shadow: 0 2px 8px rgba(185,64,64,0.25);
-      }
-
-      /* Summary strip */
-      .quiz-summary {
-        display: flex; align-items: center; gap: 0.75rem;
-        padding: 0.9rem 1.1rem;
-        background: linear-gradient(135deg, rgba(22,45,32,0.04), rgba(201,168,76,0.06));
-        border-top: 1px solid var(--cream-dark);
-        border-radius: 0 0 12px 12px;
-        flex-wrap: wrap;
-      }
-
-      .summary-pill {
-        display: flex; align-items: center; gap: 0.3rem;
-        padding: 0.25rem 0.6rem; border-radius: 20px;
-        font-size: 0.75rem; font-weight: 500;
-      }
-      .pill-yes { background: rgba(58,112,81,0.12); color: var(--green-mid); }
-      .pill-no  { background: rgba(185,64,64,0.1); color: #b94040; }
-      .pill-skip { background: var(--cream-dark); color: var(--text-muted); }
-
-      .summary-label { font-size: 0.78rem; color: var(--text-muted); margin-left: auto; }
-
-      /* Submit button */
-      .btn-primary {
-        width: 100%; padding: 0.9rem 1.5rem;
-        background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-deep) 100%);
-        color: var(--white); border: none; border-radius: 8px;
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1rem; font-weight: 600; letter-spacing: 0.02em;
-        cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-        box-shadow: 0 4px 14px rgba(22,45,32,0.22);
-        display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-        position: relative; overflow: hidden;
-      }
       .btn-primary svg { width: 18px; height: 18px; fill: var(--gold); flex-shrink: 0; }
+
       .btn-primary::after {
-        content: ''; position: absolute; inset: 0;
+        content: '';
+        position: absolute;
+        inset: 0;
         background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, transparent 60%);
-        opacity: 0; transition: opacity 0.2s;
+        opacity: 0;
+        transition: opacity 0.2s;
       }
+
       .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(22,45,32,0.30); }
       .btn-primary:hover::after { opacity: 1; }
       .btn-primary:active { transform: translateY(0); }
@@ -349,15 +294,13 @@
             </div>
             <div>
               <h2>Створити Свято</h2>
-              <p>Заповніть деталі та анкету про ваші захоплення</p>
+              <p>Заповніть деталі вашого свята</p>
             </div>
           </div>
         </div>
 
         <div class="card-body">
-          <form id="createEventForm">
-
-            <!-- Event Name -->
+          <form id="createEventForm" method="POST" action="/create-event">
             <div class="form-group">
               <label for="name" class="form-label">Назва свята</label>
               <input
@@ -369,41 +312,18 @@
                 required
               />
             </div>
-
-            <div class="divider"></div>
-
-            <!-- Questionnaire -->
             <div class="form-group">
-              <div class="quiz-header">
-                <div class="quiz-title-group">
-                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                  <span class="quiz-title">Анкета захоплень</span>
-                </div>
-                <div class="quiz-progress-wrap">
-                  <span class="quiz-count">Відповіді: <strong id="answeredCount">0</strong> / 100</span>
-                  <div class="progress-bar-track">
-                    <div class="progress-bar-fill" id="progressFill"></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Category tabs -->
-              <div class="category-tabs" id="categoryTabs"></div>
-
-              <!-- Questions panel -->
-              <div class="questions-panel">
-                <div id="questionsContainer"></div>
-                <div class="quiz-summary" id="quizSummary">
-                  <span class="summary-pill pill-yes">✓ Так: <strong id="yesCount">0</strong></span>
-                  <span class="summary-pill pill-no">✗ Ні: <strong id="noCount">0</strong></span>
-                  <span class="summary-pill pill-skip">— Не вказано: <strong id="skipCount">100</strong></span>
-                  <span class="summary-label">Дайте відповідь на якомога більше запитань</span>
-                </div>
-              </div>
+              <label for="recommendations" class="form-label">Рекомендації</label>
+              <textarea
+                class="form-control"
+                id="recommendations"
+                name="recommendations"
+                rows="4"
+                placeholder="Побажання щодо подарунків, бюджет, тематика…"
+              ></textarea>
+              <p class="form-hint">Необов'язково — допоможіть учасникам обрати подарунки</p>
             </div>
-
             <div class="divider"></div>
-
             <button type="submit" class="btn-primary">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
               Створити свято
@@ -414,306 +334,36 @@
     </div>
 
     <script type="module">
-      /* ── Question data ── */
-      const CATEGORIES = [
-        {
-          id: 'reading',
-          label: '📚 Читання',
-          questions: [
-            'Я люблю читати художню літературу',
-            'Я регулярно читаю нехудожні книги (науково-популярні, біографії тощо)',
-            'Я читаю книги з психології або саморозвитку',
-            'Мені подобаються детективи та трилери',
-            'Я захоплююся фантастикою або фентезі',
-            'Я читаю поезію із задоволенням',
-            'Я стежу за новинками літератури',
-            'Я маю домашню бібліотеку з понад 50 книг',
-            'Мені подобається читати комікси або графічні романи',
-            'Я люблю читати мангу',
-          ],
-        },
-        {
-          id: 'music',
-          label: '🎵 Музика',
-          questions: [
-            'Я граю на якомусь музичному інструменті',
-            'Я слухаю музику щодня',
-            'Я ходжу на концерти або музичні фестивалі',
-            'Мені подобається класична музика',
-            'Я захоплююся джазом або блюзом',
-            'Я люблю рок або метал',
-            'Мені до вподоби електронна музика',
-            'Я слухаю подкасти або аудіокниги',
-            'Я граю або хотів би грати на гітарі',
-            'Я співаю (у хорі, кареоке або просто для задоволення)',
-          ],
-        },
-        {
-          id: 'movies',
-          label: '🎬 Кіно та серіали',
-          questions: [
-            'Я регулярно дивлюся нові фільми',
-            'Я захоплююся серіалами (дивлюся декілька серіалів одночасно)',
-            'Мені подобаються документальні фільми',
-            'Я люблю анімаційні фільми та аніме',
-            'Мені до вподоби фільми жахів',
-            'Я ходжу в кінотеатр хоча б раз на місяць',
-            'Мені подобаються іноземні фільми з субтитрами',
-            'Я цікавлюся режисурою та кінематографом як мистецтвом',
-            'Я люблю романтичні комедії',
-            'Мені подобаються супергеройські фільми та блокбастери',
-          ],
-        },
-        {
-          id: 'games',
-          label: '🎮 Ігри',
-          questions: [
-            'Я граю у відеоігри (консоль або ПК)',
-            'Я граю у мобільні ігри регулярно',
-            'Мені подобаються настільні ігри',
-            'Я захоплююся рольовими іграми (RPG)',
-            'Мені подобаються стратегії (шахи, стратегічні відеоігри тощо)',
-            'Я граю у карткові ігри (покер, UNO тощо)',
-            'Мені подобаються квести та головоломки',
-            'Я слідкую за кіберспортом або стримами',
-            'Я граю у Dungeons & Dragons або подібні настільні RPG',
-            'Мені подобаються симулятори (міст, ферм, транспорту тощо)',
-          ],
-        },
-        {
-          id: 'sport',
-          label: '🏃 Спорт та активність',
-          questions: [
-            'Я регулярно займаюся спортом (хоча б 2–3 рази на тиждень)',
-            'Я бігаю або ходжу на довгі прогулянки',
-            'Мені подобається плавання',
-            'Я займаюся або хотів би займатися йогою',
-            'Мені подобається командний спорт (футбол, баскетбол тощо)',
-            'Я займаюся або хотів би займатися бойовими мистецтвами',
-            'Мені подобається велоспорт (їзда на велосипеді)',
-            'Я ходжу в похід або займаюся альпінізмом',
-            'Мені подобаються зимові види спорту (лижі, ковзани тощо)',
-            'Я займаюся фітнесом або силовими тренуваннями',
-          ],
-        },
-        {
-          id: 'art',
-          label: '🎨 Творчість та мистецтво',
-          questions: [
-            'Я малюю або займаюся живописом',
-            'Мені подобається скульптура або ліплення',
-            'Я займаюся або хотів би займатися каліграфією',
-            'Мені подобається фотографія як хобі',
-            'Я займаюся DIY та рукоділлям',
-            'Мені подобається шиття, вʼязання або вишивання',
-            'Я цікавлюся графічним дизайном або ілюстрацією',
-            'Мені подобається відвідувати галереї та виставки',
-            'Я займаюся або хотів би займатися кераміком',
-            'Мені до вподоби скрапбукінг або ведення творчих щоденників',
-          ],
-        },
-        {
-          id: 'cooking',
-          label: '🍳 Кулінарія',
-          questions: [
-            'Я люблю готувати і роблю це із задоволенням',
-            'Я часто пробую нові рецепти',
-            'Мені подобається виготовляти випічку та десерти',
-            'Я цікавлюся кухнями різних країн світу',
-            'Мені подобається кава-культура (різні методи заварювання, обсмажування)',
-            'Я цікавлюся чаєм та чайними церемоніями',
-            'Мені подобається готувати для великої компанії',
-            'Я стежу за кулінарними блогами або шоу',
-            'Я займаюся або хотів би займатися виноробством, пивоварінням чи квасом',
-            'Мені подобається пікнік та барбекю',
-          ],
-        },
-        {
-          id: 'tech',
-          label: '💻 Технології та наука',
-          questions: [
-            'Я захоплюся програмуванням або розробкою ПЗ',
-            'Мені цікава робототехніка або Arduino/Raspberry Pi',
-            'Я стежу за новинками у світі технологій',
-            'Мені подобається астрономія та космос',
-            'Я цікавлюся штучним інтелектом та машинним навчанням',
-            'Мені подобаються наукові журнали або науково-популярні матеріали',
-            'Я захоплюся 3D-друком або моделюванням',
-            'Мені цікава електроніка та радіоаматорство',
-            'Я цікавлюся криптовалютами або блокчейном',
-            'Мені подобається збирати або модифікувати гаджети',
-          ],
-        },
-        {
-          id: 'nature',
-          label: '🌿 Природа та тварини',
-          questions: [
-            'У мене є домашні тварини або я дуже їх люблю',
-            'Мені подобається садівництво або вирощування рослин',
-            'Я люблю проводити час на природі',
-            'Мені подобаються пташина та орнітологія',
-            'Я захоплююся екологією та сталим розвитком',
-            'Мені подобається рибальство',
-            'Я цікавлюся виживанням у дикій природі (bushcraft)',
-            'Мені подобається фотографувати природу та тварин',
-            'Я займаюся або хотів би займатися бджільництвом',
-            'Мені цікаве зоряне спостереження та астрофотографія',
-          ],
-        },
-        {
-          id: 'lifestyle',
-          label: '✨ Стиль та спосіб життя',
-          questions: [
-            'Я цікавлюся модою та стилем одягу',
-            'Мені подобається мінімалізм і організація простору',
-            'Я захоплюся вінтажними речами або колекціонуванням',
-            'Мені подобається ароматерапія та свічки',
-            'Я стежу за трендами краси та догляду за собою',
-            'Мені подобається подорожувати і я роблю це регулярно',
-            'Я цікавлюся психологією та медитацією',
-            'Мені подобається відвідувати кафе та ресторани',
-            'Я веду щоденник або практикую journaling',
-            'Мені до вподоби зимові свята та святкова атмосфера',
-          ],
-        },
-      ];
+      import { getCurrentUser, notify } from './scripts/main.js';
+      document
+        .getElementById('createEventForm')
+        .addEventListener('submit', async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const data = Object.fromEntries(formData.entries());
+          try {
+            const user = await getCurrentUser();
+            const response = await fetch('/api/create-event', {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ ...data, userId: user._id }),
+            });
 
-      /* ── State ── */
-      const answers = {}; // questionIndex → 'yes' | 'no'
-      let activeCategory = CATEGORIES[0].id;
-
-      /* ── DOM ── */
-      const tabsEl = document.getElementById('categoryTabs');
-      const containerEl = document.getElementById('questionsContainer');
-      const progressFill = document.getElementById('progressFill');
-      const answeredCount = document.getElementById('answeredCount');
-      const yesCount = document.getElementById('yesCount');
-      const noCount = document.getElementById('noCount');
-      const skipCount = document.getElementById('skipCount');
-
-      /* ── Build question index ── */
-      let globalIndex = 0;
-      const allQuestions = []; // { catId, text, globalIdx }
-      CATEGORIES.forEach(cat => {
-        cat.questions.forEach(q => {
-          allQuestions.push({ catId: cat.id, text: q, globalIdx: globalIndex++ });
-        });
-      });
-
-      /* ── Render tabs ── */
-      function renderTabs() {
-        tabsEl.innerHTML = '';
-        CATEGORIES.forEach(cat => {
-          const catQuestions = allQuestions.filter(q => q.catId === cat.id);
-          const hasAnswers = catQuestions.some(q => answers[q.globalIdx]);
-          const tab = document.createElement('button');
-          tab.type = 'button';
-          tab.className = 'cat-tab' + (cat.id === activeCategory ? ' active' : '') + (hasAnswers ? ' has-answers' : '');
-          tab.dataset.catId = cat.id;
-          tab.innerHTML = `<span class="cat-check"></span>${cat.label}`;
-          tab.addEventListener('click', () => {
-            activeCategory = cat.id;
-            renderTabs();
-            renderQuestions();
-          });
-          tabsEl.appendChild(tab);
-        });
-      }
-
-      /* ── Render questions ── */
-      function renderQuestions() {
-        const catQuestions = allQuestions.filter(q => q.catId === activeCategory);
-        containerEl.innerHTML = '';
-        catQuestions.forEach((q, localIdx) => {
-          const row = document.createElement('div');
-          row.className = 'question-row';
-          const currentAns = answers[q.globalIdx];
-          row.innerHTML = `
-            <span class="q-num">${q.globalIdx + 1}.</span>
-            <span class="q-text">${q.text}</span>
-            <div class="q-toggle">
-              <button type="button" class="toggle-btn toggle-yes${currentAns === 'yes' ? ' selected' : ''}" data-idx="${q.globalIdx}" data-val="yes">Так</button>
-              <button type="button" class="toggle-btn toggle-no${currentAns === 'no' ? ' selected' : ''}" data-idx="${q.globalIdx}" data-val="no">Ні</button>
-            </div>
-          `;
-          containerEl.appendChild(row);
-        });
-
-        // Bind toggle events
-        containerEl.querySelectorAll('.toggle-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const idx = parseInt(btn.dataset.idx);
-            const val = btn.dataset.val;
-            if (answers[idx] === val) {
-              delete answers[idx]; // deselect
+            const result = await response.json();
+            if (response.ok) {
+              alert('Cвято успішно створено');
+              window.location.href = `/event?id=${result.event._id}`;
             } else {
-              answers[idx] = val;
+              alert(result.message || 'Помилка створення свята');
             }
-            updateStats();
-            renderTabs();
-            renderQuestions();
-          });
-        });
-      }
-
-      /* ── Update stats ── */
-      function updateStats() {
-        const total = Object.keys(answers).length;
-        const yes = Object.values(answers).filter(v => v === 'yes').length;
-        const no = Object.values(answers).filter(v => v === 'no').length;
-        const skip = 100 - total;
-
-        progressFill.style.width = (total) + '%';
-        answeredCount.textContent = total;
-        yesCount.textContent = yes;
-        noCount.textContent = no;
-        skipCount.textContent = skip;
-      }
-
-      /* ── Init ── */
-      renderTabs();
-      renderQuestions();
-
-      /* ── Form submit ── */
-      document.getElementById('createEventForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const name = document.getElementById('name').value.trim();
-        if (!name) { alert('Введіть назву свята'); return; }
-
-        // Build recommendations string from answers
-        const lines = [];
-        allQuestions.forEach(q => {
-          if (answers[q.globalIdx]) {
-            lines.push(`${q.text}: ${answers[q.globalIdx] === 'yes' ? 'Так' : 'Ні'}`);
+          } catch (error) {
+            console.error('Помилка:', error);
+            alert('Сталася помилка. Спробуйте ще раз пізніше.');
           }
         });
-        const recommendations = lines.length > 0 ? lines.join('\n') : '';
-
-        try {
-          // Get current user
-          const userRes = await fetch('/api/user/current', { credentials: 'include' });
-          if (!userRes.ok) { window.location.href = '/login'; return; }
-          const user = await userRes.json();
-
-          const response = await fetch('/api/create-event', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, recommendations, userId: user._id }),
-          });
-
-          const result = await response.json();
-          if (response.ok) {
-            alert('Свято успішно створено');
-            window.location.href = `/event?id=${result.event._id}`;
-          } else {
-            alert(result.message || 'Помилка створення свята');
-          }
-        } catch (error) {
-          console.error('Помилка:', error);
-          alert('Сталася помилка. Спробуйте ще раз пізніше.');
-        }
-      });
     </script>
   </body>
 </html>

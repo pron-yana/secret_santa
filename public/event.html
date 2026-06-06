@@ -22,7 +22,6 @@
         --text-muted:   #7a7264;
         --white:        #ffffff;
         --red:          #b94040;
-        --red-light:    #fef0f0;
         --shadow-warm:  0 8px 40px rgba(22,45,32,0.14);
         --radius:       14px;
       }
@@ -41,409 +40,246 @@
       /* ── Top Nav ── */
       .topbar {
         background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
-        padding: 0 2rem;
-        height: 64px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        padding: 0 2rem; height: 64px;
+        display: flex; align-items: center; justify-content: space-between;
         box-shadow: 0 2px 20px rgba(22,45,32,0.25);
+        position: sticky; top: 0; z-index: 100;
       }
-
-      .topbar-brand {
-        display: flex;
-        align-items: center;
-        gap: 0.65rem;
-      }
-
+      .topbar-brand { display: flex; align-items: center; gap: 0.65rem; }
       .topbar-brand svg { width: 22px; height: 22px; fill: var(--gold); flex-shrink: 0; }
-
       .topbar-brand span {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: var(--white);
+        font-size: 1.15rem; font-weight: 700; color: var(--white);
       }
-
       .btn-back {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        color: rgba(255,255,255,0.75);
-        text-decoration: none;
-        font-size: 0.88rem;
-        font-family: 'Lora', serif;
-        transition: color 0.2s;
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        color: rgba(255,255,255,0.75); text-decoration: none;
+        font-size: 0.88rem; font-family: 'Lora', serif; transition: color 0.2s;
       }
-
       .btn-back:hover { color: var(--gold-light); }
       .btn-back svg { width: 16px; height: 16px; fill: currentColor; }
 
       /* ── Page ── */
       .page-content {
-        max-width: 640px;
-        margin: 0 auto;
+        max-width: 680px; margin: 0 auto;
         padding: 2.5rem 1.25rem 0;
         animation: fadeUp 0.5s ease both;
       }
-
       @keyframes fadeUp {
         from { opacity: 0; transform: translateY(20px); }
         to   { opacity: 1; transform: translateY(0); }
       }
 
-      /* ── Event Hero Card ── */
+      /* ── Event Hero ── */
       .event-hero {
         background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
-        border-radius: var(--radius);
-        padding: 2rem;
-        margin-bottom: 1.25rem;
-        position: relative;
-        overflow: hidden;
-        box-shadow: var(--shadow-warm);
+        border-radius: var(--radius); padding: 2rem; margin-bottom: 1.25rem;
+        position: relative; overflow: hidden; box-shadow: var(--shadow-warm);
       }
-
       .event-hero::before {
-        content: '';
-        position: absolute;
-        top: -50px; right: -50px;
-        width: 160px; height: 160px;
-        border-radius: 50%;
+        content: ''; position: absolute; top: -50px; right: -50px;
+        width: 160px; height: 160px; border-radius: 50%;
         background: rgba(201,168,76,0.10);
       }
-
       .event-hero::after {
-        content: '';
-        position: absolute;
-        bottom: -30px; left: 20px;
-        width: 100px; height: 100px;
-        border-radius: 50%;
+        content: ''; position: absolute; bottom: -30px; left: 20px;
+        width: 100px; height: 100px; border-radius: 50%;
         background: rgba(255,255,255,0.04);
       }
-
       .event-hero-inner { position: relative; z-index: 1; }
 
       .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.3rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.72rem;
-        font-weight: 500;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        margin-bottom: 0.9rem;
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        padding: 0.3rem 0.75rem; border-radius: 20px;
+        font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em;
+        text-transform: uppercase; margin-bottom: 0.9rem;
       }
-
-      .status-badge .badge-dot {
-        width: 6px; height: 6px;
-        border-radius: 50%;
-        flex-shrink: 0;
-      }
-
-      .status-active {
-        background: rgba(58,112,81,0.3);
-        color: #7dd3a8;
-        border: 1px solid rgba(58,112,81,0.4);
-      }
-
-      .status-active .badge-dot { background: #7dd3a8; }
-
-      .status-finished {
-        background: rgba(201,168,76,0.2);
-        color: var(--gold-light);
-        border: 1px solid rgba(201,168,76,0.35);
-      }
-
+      .status-badge .badge-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+      .status-active  { background: rgba(58,112,81,0.3);  color: #7dd3a8; border: 1px solid rgba(58,112,81,0.4); }
+      .status-active .badge-dot  { background: #7dd3a8; }
+      .status-finished { background: rgba(201,168,76,0.2); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.35); }
       .status-finished .badge-dot { background: var(--gold); }
 
       #eventName {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.9rem;
-        font-weight: 700;
-        color: var(--white);
-        line-height: 1.15;
-        letter-spacing: -0.02em;
+        font-size: 1.9rem; font-weight: 700; color: var(--white);
+        line-height: 1.15; letter-spacing: -0.02em;
       }
-
-      .event-meta-row {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        margin-top: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-size: 0.85rem;
-        color: rgba(255,255,255,0.65);
-      }
-
+      .event-meta-row { display: flex; align-items: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+      .meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.65); }
       .meta-item svg { width: 14px; height: 14px; fill: var(--gold); opacity: 0.8; }
-      .meta-item strong { color: rgba(255,255,255,0.9); font-weight: 500; }
-
       .owner-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.3rem;
-        background: rgba(201,168,76,0.18);
-        border: 1px solid rgba(201,168,76,0.3);
-        color: var(--gold-light);
-        padding: 0.2rem 0.6rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        letter-spacing: 0.04em;
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        background: rgba(201,168,76,0.18); border: 1px solid rgba(201,168,76,0.3);
+        color: var(--gold-light); padding: 0.2rem 0.6rem;
+        border-radius: 4px; font-size: 0.75rem; letter-spacing: 0.04em;
       }
 
       /* ── Cards ── */
       .card {
-        background: var(--white);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-warm);
-        border: 1px solid rgba(201,168,76,0.15);
-        overflow: hidden;
-        margin-bottom: 1.25rem;
+        background: var(--white); border-radius: var(--radius);
+        box-shadow: var(--shadow-warm); border: 1px solid rgba(201,168,76,0.15);
+        overflow: hidden; margin-bottom: 1.25rem;
       }
-
       .card-section-title {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--green-deep);
-        padding: 1.1rem 1.5rem;
-        border-bottom: 1px solid var(--cream-dark);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        font-size: 1rem; font-weight: 600; color: var(--green-deep);
+        padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--cream-dark);
+        display: flex; align-items: center; gap: 0.5rem;
       }
-
       .card-section-title svg { width: 16px; height: 16px; fill: var(--gold); flex-shrink: 0; }
-
       .card-body { padding: 1.5rem; }
 
-      /* ── State Blocks ── */
+      /* ── State blocks ── */
       .state-block { display: none; }
 
-      .info-panel {
-        background: var(--cream);
-        border: 1px solid var(--cream-dark);
-        border-radius: 10px;
-        padding: 1.25rem 1.5rem;
-      }
-
-      .info-panel p {
-        color: var(--text-mid);
-        font-size: 0.92rem;
-        line-height: 1.6;
-      }
-
-      .info-panel p + p { margin-top: 0.6rem; }
-
-      /* Waiting state */
-      .waiting-icon {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-      }
-
+      .waiting-icon { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
       .waiting-icon svg { width: 36px; height: 36px; fill: rgba(58,112,81,0.3); }
+      .waiting-icon p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
 
-      .waiting-icon p {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        line-height: 1.5;
-      }
-
-      /* Gift reveal */
       .gift-reveal {
         background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        position: relative;
-        overflow: hidden;
+        border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;
+        position: relative; overflow: hidden;
       }
-
       .gift-reveal::before {
-        content: '';
-        position: absolute;
-        top: -20px; right: -20px;
-        width: 80px; height: 80px;
-        border-radius: 50%;
+        content: ''; position: absolute; top: -20px; right: -20px;
+        width: 80px; height: 80px; border-radius: 50%;
         background: rgba(201,168,76,0.12);
       }
+      .gift-reveal-label { font-size: 0.72rem; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; position: relative; z-index: 1; }
+      .gift-reveal-value { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--white); position: relative; z-index: 1; }
 
-      .gift-reveal-label {
-        font-size: 0.72rem;
-        color: rgba(255,255,255,0.55);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        margin-bottom: 0.4rem;
-        position: relative; z-index: 1;
-      }
+      .gift-wish-box { background: var(--cream); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 1.1rem 1.25rem; }
+      .gift-wish-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+      #giftWish { color: var(--text-dark); font-size: 0.88rem; line-height: 1.7; white-space: pre-line; }
 
-      .gift-reveal-value {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: var(--white);
-        position: relative; z-index: 1;
-      }
-
-      .gift-wish-box {
-        background: var(--cream);
-        border: 1px solid var(--cream-dark);
-        border-radius: 10px;
-        padding: 1.1rem 1.25rem;
-      }
-
-      .gift-wish-label {
-        font-size: 0.72rem;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        margin-bottom: 0.4rem;
-      }
-
-      #giftWish {
-        color: var(--text-dark);
-        font-size: 0.92rem;
-        line-height: 1.6;
-        font-style: italic;
-      }
-
-      /* Not finished + not participant */
       .finished-absent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 1.5rem 1rem;
-        gap: 0.75rem;
+        display: flex; flex-direction: column; align-items: center;
+        text-align: center; padding: 1.5rem 1rem; gap: 0.75rem;
       }
-
       .finished-absent svg { width: 40px; height: 40px; fill: var(--cream-dark); }
       .finished-absent p { color: var(--text-muted); font-size: 0.9rem; }
 
-      /* ── Form ── */
-      .form-label {
-        display: block;
-        font-size: 0.82rem;
-        font-weight: 500;
-        color: var(--text-mid);
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        margin-bottom: 0.5rem;
+      /* ── Owner Panel ── */
+      .owner-panel {
+        background: var(--white); border-radius: var(--radius);
+        box-shadow: var(--shadow-warm); border: 1px solid rgba(201,168,76,0.15);
+        overflow: hidden; margin-bottom: 1.25rem;
       }
-
-      .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1.5px solid var(--cream-dark);
-        border-radius: 8px;
-        font-family: 'Lora', Georgia, serif;
-        font-size: 0.95rem;
-        color: var(--text-dark);
-        background: var(--cream);
-        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-        outline: none;
-        resize: vertical;
-        -webkit-appearance: none;
-      }
-
-      .form-control:focus {
-        border-color: var(--green-light);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(58,112,81,0.12);
-      }
-
-      .form-control::placeholder { color: #b0a898; }
-      textarea.form-control { min-height: 110px; line-height: 1.6; }
+      .stat-row { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--cream-dark); }
+      .stat-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--green-mid), var(--green-deep)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+      .stat-icon svg { width: 18px; height: 18px; fill: var(--gold); }
+      .stat-info { flex: 1; }
+      .stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+      .stat-value { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--green-deep); line-height: 1.2; }
+      .owner-actions { padding: 1.25rem 1.5rem; }
 
       /* ── Buttons ── */
       .btn {
-        width: 100%;
-        padding: 0.85rem 1.5rem;
-        border: none;
-        border-radius: 8px;
+        width: 100%; padding: 0.85rem 1.5rem; border: none; border-radius: 8px;
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
+        font-size: 1rem; font-weight: 600; cursor: pointer;
         transition: transform 0.15s, box-shadow 0.15s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-top: 1rem;
+        display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        margin-top: 1rem; position: relative; overflow: hidden;
       }
-
       .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+      .btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, transparent 60%); opacity: 0; transition: opacity 0.2s; }
       .btn:hover { transform: translateY(-1px); }
+      .btn:hover::after { opacity: 1; }
       .btn:active { transform: translateY(0); }
 
-      .btn-success {
-        background: linear-gradient(135deg, var(--green-light) 0%, var(--green-mid) 100%);
-        color: var(--white);
-        box-shadow: 0 4px 14px rgba(22,45,32,0.22);
-      }
-
+      .btn-success { background: linear-gradient(135deg, var(--green-light) 0%, var(--green-mid) 100%); color: var(--white); box-shadow: 0 4px 14px rgba(22,45,32,0.22); }
       .btn-success svg { fill: var(--gold); }
       .btn-success:hover { box-shadow: 0 6px 20px rgba(22,45,32,0.30); }
 
-      .btn-danger {
-        background: linear-gradient(135deg, #c45252 0%, var(--red) 100%);
-        color: var(--white);
-        box-shadow: 0 4px 14px rgba(185,64,64,0.28);
-      }
-
+      .btn-danger { background: linear-gradient(135deg, #c45252 0%, var(--red) 100%); color: var(--white); box-shadow: 0 4px 14px rgba(185,64,64,0.28); }
       .btn-danger svg { fill: rgba(255,255,255,0.8); }
       .btn-danger:hover { box-shadow: 0 6px 20px rgba(185,64,64,0.40); }
 
-      /* ── Owner Panel ── */
-      .owner-panel {
-        background: var(--white);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-warm);
-        border: 1px solid rgba(201,168,76,0.15);
-        overflow: hidden;
-        margin-bottom: 1.25rem;
+      /* ── Questionnaire (mirrors createEvent.html style) ── */
+      .quiz-header {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;
       }
-
-      .stat-row {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1.1rem 1.5rem;
-        border-bottom: 1px solid var(--cream-dark);
-      }
-
-      .stat-icon {
-        width: 40px; height: 40px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .stat-icon svg { width: 18px; height: 18px; fill: var(--gold); }
-
-      .stat-info { flex: 1; }
-      .stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-
-      .stat-value {
+      .quiz-title-group { display: flex; align-items: center; gap: 0.6rem; }
+      .quiz-title-group svg { width: 20px; height: 20px; fill: var(--gold); flex-shrink: 0; }
+      .quiz-title {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: var(--green-deep);
-        line-height: 1.2;
+        font-size: 1.1rem; font-weight: 600; color: var(--green-deep);
+      }
+      .quiz-progress-wrap { display: flex; align-items: center; gap: 0.75rem; }
+      .quiz-count { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .quiz-count strong { color: var(--green-mid); }
+      .progress-bar-track { width: 120px; height: 6px; background: var(--cream-dark); border-radius: 3px; overflow: hidden; }
+      .progress-bar-fill {
+        height: 100%; width: 0%;
+        background: linear-gradient(90deg, var(--green-light), var(--gold));
+        border-radius: 3px;
+        transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
       }
 
-      .owner-actions { padding: 1.25rem 1.5rem; }
+      /* Category tabs */
+      .category-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+      .cat-tab {
+        padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.75rem;
+        font-weight: 500; cursor: pointer; border: 1.5px solid var(--cream-dark);
+        background: var(--cream); color: var(--text-muted);
+        transition: all 0.2s; letter-spacing: 0.03em; white-space: nowrap;
+        font-family: 'Lora', serif;
+      }
+      .cat-tab:hover { border-color: var(--green-light); color: var(--green-mid); }
+      .cat-tab.active { background: var(--green-deep); border-color: var(--green-deep); color: var(--white); box-shadow: 0 2px 8px rgba(22,45,32,0.2); }
+      .cat-tab .cat-check {
+        display: inline-block; width: 6px; height: 6px;
+        border-radius: 50%; background: var(--gold); margin-right: 0.3rem;
+        opacity: 0; transition: opacity 0.2s;
+        vertical-align: middle; position: relative; top: -1px;
+      }
+      .cat-tab.has-answers .cat-check { opacity: 1; }
+
+      /* Questions panel */
+      .questions-panel {
+        background: var(--cream); border: 1.5px solid var(--cream-dark);
+        border-radius: 12px; overflow: hidden;
+      }
+      .question-row {
+        display: flex; align-items: center;
+        padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--cream-dark);
+        gap: 0.75rem; transition: background 0.15s;
+      }
+      .question-row:last-child { border-bottom: none; }
+      .question-row:hover { background: rgba(201,168,76,0.06); }
+      .q-num { font-size: 0.72rem; color: var(--text-muted); min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+      .q-text { flex: 1; font-size: 0.9rem; color: var(--text-dark); line-height: 1.4; }
+      .q-toggle { display: flex; gap: 0.35rem; flex-shrink: 0; }
+      .toggle-btn {
+        padding: 0.3rem 0.7rem; border-radius: 6px;
+        font-size: 0.78rem; font-weight: 500;
+        cursor: pointer; border: 1.5px solid transparent;
+        transition: all 0.15s; font-family: 'Lora', serif;
+      }
+      .toggle-yes { background: rgba(58,112,81,0.08); border-color: rgba(58,112,81,0.2); color: var(--green-light); }
+      .toggle-yes:hover, .toggle-yes.selected { background: var(--green-light); border-color: var(--green-light); color: var(--white); box-shadow: 0 2px 8px rgba(58,112,81,0.3); }
+      .toggle-no  { background: rgba(185,64,64,0.06); border-color: rgba(185,64,64,0.18); color: var(--red); }
+      .toggle-no:hover, .toggle-no.selected { background: var(--red); border-color: var(--red); color: var(--white); box-shadow: 0 2px 8px rgba(185,64,64,0.25); }
+
+      /* Summary strip */
+      .quiz-summary {
+        display: flex; align-items: center; gap: 0.75rem;
+        padding: 0.9rem 1.1rem;
+        background: linear-gradient(135deg, rgba(22,45,32,0.04), rgba(201,168,76,0.06));
+        border-top: 1px solid var(--cream-dark);
+        border-radius: 0 0 12px 12px; flex-wrap: wrap;
+      }
+      .summary-pill { display: flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
+      .pill-yes  { background: rgba(58,112,81,0.12); color: var(--green-mid); }
+      .pill-no   { background: rgba(185,64,64,0.1);  color: var(--red); }
+      .pill-skip { background: var(--cream-dark); color: var(--text-muted); }
+      .summary-label { font-size: 0.78rem; color: var(--text-muted); margin-left: auto; }
+
+      .divider { height: 1px; background: var(--cream-dark); margin: 1.25rem 0; }
     </style>
   </head>
   <body>
@@ -475,14 +311,12 @@
               <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
               <span id="username">Завантаження...</span>
             </div>
-            <span id="ownerRemainder" class="owner-tag" style="display:none">
-              👑 Власник
-            </span>
+            <span id="ownerRemainder" class="owner-tag" style="display:none">👑 Власник</span>
           </div>
         </div>
       </div>
 
-      <!-- Owner Panel (participants count + finish button) -->
+      <!-- Owner Panel -->
       <div id="ownerPanel" class="owner-panel" style="display:none">
         <div class="stat-row" id="participantCountRow" style="display:none">
           <div class="stat-icon">
@@ -517,20 +351,40 @@
             </div>
           </div>
 
-          <!-- Not participant, event active → join form -->
+          <!-- Not participant, event active → questionnaire -->
           <div id="notParticipant" class="state-block">
             <form id="participateForm">
-              <div style="margin-bottom:1rem">
-                <label for="wishes" class="form-label">Ваші побажання</label>
-                <textarea
-                  class="form-control"
-                  id="wishes"
-                  name="wishes"
-                  rows="4"
-                  placeholder="Що б ви хотіли отримати у подарунок?"
-                  required
-                ></textarea>
+
+              <!-- Quiz header -->
+              <div class="quiz-header">
+                <div class="quiz-title-group">
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                  <span class="quiz-title">Анкета захоплень</span>
+                </div>
+                <div class="quiz-progress-wrap">
+                  <span class="quiz-count">Відповіді: <strong id="answeredCount">0</strong> / 100</span>
+                  <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                  </div>
+                </div>
               </div>
+
+              <!-- Category tabs -->
+              <div class="category-tabs" id="categoryTabs"></div>
+
+              <!-- Questions panel -->
+              <div class="questions-panel">
+                <div id="questionsContainer"></div>
+                <div class="quiz-summary">
+                  <span class="summary-pill pill-yes">✓ Так: <strong id="yesCount">0</strong></span>
+                  <span class="summary-pill pill-no">✗ Ні: <strong id="noCount">0</strong></span>
+                  <span class="summary-pill pill-skip">— Не вказано: <strong id="skipCount">100</strong></span>
+                  <span class="summary-label">Дайте відповідь на якомога більше запитань</span>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
               <button type="submit" class="btn btn-success">
                 <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                 Беру участь
@@ -554,7 +408,7 @@
               <div class="gift-reveal-value" id="giftRecipient">Завантаження...</div>
             </div>
             <div class="gift-wish-box">
-              <div class="gift-wish-label">Побажання</div>
+              <div class="gift-wish-label">Хобі та інтереси</div>
               <div id="giftWish">Завантаження...</div>
             </div>
           </div>
@@ -564,6 +418,281 @@
 
     </div><!-- /page-content -->
 
+    <script>
+      /* ── Question data (10 categories × 10 questions = 100) ── */
+      const CATEGORIES = [
+        {
+          id: 'reading',
+          label: '📚 Читання',
+          questions: [
+            'Я люблю читати художню літературу',
+            'Я регулярно читаю нехудожні книги (науково-популярні, біографії тощо)',
+            'Я читаю книги з психології або саморозвитку',
+            'Мені подобаються детективи та трилери',
+            'Я захоплюся фантастикою або фентезі',
+            'Я читаю поезію із задоволенням',
+            'Я стежу за новинками літератури',
+            'Я маю домашню бібліотеку з понад 50 книг',
+            'Мені подобається читати комікси або графічні романи',
+            'Я люблю читати мангу',
+          ],
+        },
+        {
+          id: 'music',
+          label: '🎵 Музика',
+          questions: [
+            'Я граю на якомусь музичному інструменті',
+            'Я слухаю музику щодня',
+            'Я ходжу на концерти або музичні фестивалі',
+            'Мені подобається класична музика',
+            'Я захоплюся джазом або блюзом',
+            'Я люблю рок або метал',
+            'Мені до вподоби електронна музика',
+            'Я слухаю подкасти або аудіокниги',
+            'Я граю або хотів би грати на гітарі',
+            'Я співаю (у хорі, кареоке або просто для задоволення)',
+          ],
+        },
+        {
+          id: 'movies',
+          label: '🎬 Кіно та серіали',
+          questions: [
+            'Я регулярно дивлюся нові фільми',
+            'Я захоплюся серіалами (дивлюся декілька серіалів одночасно)',
+            'Мені подобаються документальні фільми',
+            'Я люблю анімаційні фільми та аніме',
+            'Мені до вподоби фільми жахів',
+            'Я ходжу в кінотеатр хоча б раз на місяць',
+            'Мені подобаються іноземні фільми з субтитрами',
+            'Я цікавлюся режисурою та кінематографом як мистецтвом',
+            'Я люблю романтичні комедії',
+            'Мені подобаються супергеройські фільми та блокбастери',
+          ],
+        },
+        {
+          id: 'games',
+          label: '🎮 Ігри',
+          questions: [
+            'Я граю у відеоігри (консоль або ПК)',
+            'Я граю у мобільні ігри регулярно',
+            'Мені подобаються настільні ігри',
+            'Я захоплюся рольовими іграми (RPG)',
+            'Мені подобаються стратегії (шахи, стратегічні відеоігри тощо)',
+            'Я граю у карткові ігри (покер, UNO тощо)',
+            'Мені подобаються квести та головоломки',
+            'Я слідкую за кіберспортом або стримами',
+            'Я граю у Dungeons & Dragons або подібні настільні RPG',
+            'Мені подобаються симулятори (міст, ферм, транспорту тощо)',
+          ],
+        },
+        {
+          id: 'sport',
+          label: '🏃 Спорт та активність',
+          questions: [
+            'Я регулярно займаюся спортом (хоча б 2–3 рази на тиждень)',
+            'Я бігаю або ходжу на довгі прогулянки',
+            'Мені подобається плавання',
+            'Я займаюся або хотів би займатися йогою',
+            'Мені подобається командний спорт (футбол, баскетбол тощо)',
+            'Я займаюся або хотів би займатися бойовими мистецтвами',
+            'Мені подобається велоспорт (їзда на велосипеді)',
+            'Я ходжу в похід або займаюся альпінізмом',
+            'Мені подобаються зимові види спорту (лижі, ковзани тощо)',
+            'Я займаюся фітнесом або силовими тренуваннями',
+          ],
+        },
+        {
+          id: 'art',
+          label: '🎨 Творчість та мистецтво',
+          questions: [
+            'Я малюю або займаюся живописом',
+            'Мені подобається скульптура або ліплення',
+            'Я займаюся або хотів би займатися каліграфією',
+            'Мені подобається фотографія як хобі',
+            'Я займаюся DIY та рукоділлям',
+            'Мені подобається шиття, в\'язання або вишивання',
+            'Я цікавлюся графічним дизайном або ілюстрацією',
+            'Мені подобається відвідувати галереї та виставки',
+            'Я займаюся або хотів би займатися керамікою',
+            'Мені до вподоби скрапбукінг або ведення творчих щоденників',
+          ],
+        },
+        {
+          id: 'cooking',
+          label: '🍳 Кулінарія',
+          questions: [
+            'Я люблю готувати і роблю це із задоволенням',
+            'Я часто пробую нові рецепти',
+            'Мені подобається виготовляти випічку та десерти',
+            'Я цікавлюся кухнями різних країн світу',
+            'Мені подобається кава-культура (різні методи заварювання, обсмажування)',
+            'Я цікавлюся чаєм та чайними церемоніями',
+            'Мені подобається готувати для великої компанії',
+            'Я стежу за кулінарними блогами або шоу',
+            'Я займаюся або хотів би займатися виноробством, пивоварінням',
+            'Мені подобається пікнік та барбекю',
+          ],
+        },
+        {
+          id: 'tech',
+          label: '💻 Технології та наука',
+          questions: [
+            'Я захоплюся програмуванням або розробкою ПЗ',
+            'Мені цікава робототехніка або Arduino/Raspberry Pi',
+            'Я стежу за новинками у світі технологій',
+            'Мені подобається астрономія та космос',
+            'Я цікавлюся штучним інтелектом та машинним навчанням',
+            'Мені подобаються наукові журнали або науково-популярні матеріали',
+            'Я захоплюся 3D-друком або моделюванням',
+            'Мені цікава електроніка та радіоаматорство',
+            'Я цікавлюся криптовалютами або блокчейном',
+            'Мені подобається збирати або модифікувати гаджети',
+          ],
+        },
+        {
+          id: 'nature',
+          label: '🌿 Природа та тварини',
+          questions: [
+            'У мене є домашні тварини або я дуже їх люблю',
+            'Мені подобається садівництво або вирощування рослин',
+            'Я люблю проводити час на природі',
+            'Мені подобаються птахи та орнітологія',
+            'Я захоплюся екологією та сталим розвитком',
+            'Мені подобається рибальство',
+            'Я цікавлюся виживанням у дикій природі (bushcraft)',
+            'Мені подобається фотографувати природу та тварин',
+            'Я займаюся або хотів би займатися бджільництвом',
+            'Мені цікаве зоряне спостереження та астрофотографія',
+          ],
+        },
+        {
+          id: 'lifestyle',
+          label: '✨ Стиль та спосіб життя',
+          questions: [
+            'Я цікавлюся модою та стилем одягу',
+            'Мені подобається мінімалізм і організація простору',
+            'Я захоплюся вінтажними речами або колекціонуванням',
+            'Мені подобається ароматерапія та свічки',
+            'Я стежу за трендами краси та догляду за собою',
+            'Мені подобається подорожувати і я роблю це регулярно',
+            'Я цікавлюся психологією та медитацією',
+            'Мені подобається відвідувати кафе та ресторани',
+            'Я веду щоденник або практикую journaling',
+            'Мені до вподоби зимові свята та святкова атмосфера',
+          ],
+        },
+      ];
+
+      /* ── State ── */
+      const answers = {};
+      let activeCategory = CATEGORIES[0].id;
+
+      /* ── Build global question index ── */
+      let globalIndex = 0;
+      const allQuestions = [];
+      CATEGORIES.forEach(cat => {
+        cat.questions.forEach(q => {
+          allQuestions.push({ catId: cat.id, text: q, globalIdx: globalIndex++ });
+        });
+      });
+
+      /* ── DOM refs ── */
+      const tabsEl        = document.getElementById('categoryTabs');
+      const containerEl   = document.getElementById('questionsContainer');
+      const progressFill  = document.getElementById('progressFill');
+      const answeredCountEl = document.getElementById('answeredCount');
+      const yesCountEl    = document.getElementById('yesCount');
+      const noCountEl     = document.getElementById('noCount');
+      const skipCountEl   = document.getElementById('skipCount');
+
+      /* ── Render tabs ── */
+      function renderTabs() {
+        tabsEl.innerHTML = '';
+        CATEGORIES.forEach(cat => {
+          const catQs = allQuestions.filter(q => q.catId === cat.id);
+          const hasAnswers = catQs.some(q => answers[q.globalIdx]);
+          const tab = document.createElement('button');
+          tab.type = 'button';
+          tab.className = 'cat-tab' + (cat.id === activeCategory ? ' active' : '') + (hasAnswers ? ' has-answers' : '');
+          tab.dataset.catId = cat.id;
+          tab.innerHTML = `<span class="cat-check"></span>${cat.label}`;
+          tab.addEventListener('click', () => {
+            activeCategory = cat.id;
+            renderTabs();
+            renderQuestions();
+          });
+          tabsEl.appendChild(tab);
+        });
+      }
+
+      /* ── Render questions for active category ── */
+      function renderQuestions() {
+        const catQs = allQuestions.filter(q => q.catId === activeCategory);
+        containerEl.innerHTML = '';
+        catQs.forEach(q => {
+          const currentAns = answers[q.globalIdx];
+          const row = document.createElement('div');
+          row.className = 'question-row';
+          row.innerHTML = `
+            <span class="q-num">${q.globalIdx + 1}.</span>
+            <span class="q-text">${q.text}</span>
+            <div class="q-toggle">
+              <button type="button" class="toggle-btn toggle-yes${currentAns === 'yes' ? ' selected' : ''}" data-idx="${q.globalIdx}" data-val="yes">Так</button>
+              <button type="button" class="toggle-btn toggle-no${currentAns === 'no' ? ' selected' : ''}" data-idx="${q.globalIdx}" data-val="no">Ні</button>
+            </div>
+          `;
+          containerEl.appendChild(row);
+        });
+
+        containerEl.querySelectorAll('.toggle-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.dataset.idx);
+            const val = btn.dataset.val;
+            if (answers[idx] === val) {
+              delete answers[idx];
+            } else {
+              answers[idx] = val;
+            }
+            updateStats();
+            renderTabs();
+            renderQuestions();
+          });
+        });
+      }
+
+      /* ── Update stats ── */
+      function updateStats() {
+        const total = Object.keys(answers).length;
+        const yes   = Object.values(answers).filter(v => v === 'yes').length;
+        const no    = Object.values(answers).filter(v => v === 'no').length;
+        const skip  = 100 - total;
+        progressFill.style.width = total + '%';
+        answeredCountEl.textContent = total;
+        yesCountEl.textContent  = yes;
+        noCountEl.textContent   = no;
+        skipCountEl.textContent = skip;
+      }
+
+      /* ── Build wishes string from answers ── */
+      function buildWishes() {
+        const categoryLines = [];
+        CATEGORIES.forEach(cat => {
+          const catQs = allQuestions.filter(q => q.catId === cat.id);
+          const yesItems = catQs.filter(q => answers[q.globalIdx] === 'yes').map(q => q.text);
+          if (yesItems.length > 0) {
+            categoryLines.push(`${cat.label}:\n${yesItems.map(t => '  • ' + t).join('\n')}`);
+          }
+        });
+        return categoryLines.length > 0
+          ? categoryLines.join('\n\n')
+          : 'Учасник не вказав конкретних вподобань.';
+      }
+
+      /* ── Init ── */
+      renderTabs();
+      renderQuestions();
+    </script>
+
     <script type="module">
       import { getCurrentUser, fetchUserById } from './scripts/main.js';
 
@@ -571,7 +700,6 @@
 
       document.addEventListener('DOMContentLoaded', async () => {
         user = await getCurrentUser();
-
         document.getElementById('username').textContent = user.username;
 
         const eventId = new URLSearchParams(window.location.search).get('id');
@@ -583,11 +711,8 @@
 
         try {
           const response = await fetch(`/api/event?id=${eventId}`, {
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            credentials: 'include', method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
           });
           const event = await response.json();
 
@@ -595,7 +720,7 @@
             document.getElementById('eventName').textContent = event.name;
 
             const statusBadge = document.getElementById('statusBadge');
-            const statusText = document.getElementById('eventStatus');
+            const statusText  = document.getElementById('eventStatus');
             if (event.completed) {
               statusText.textContent = 'Завершено';
               statusBadge.classList.remove('status-active');
@@ -607,112 +732,73 @@
             if (event.ownerId === user._id) {
               document.getElementById('ownerPanel').style.display = 'block';
               document.getElementById('participantCountRow').style.display = 'flex';
-              document.getElementById('participants').textContent =
-                event.participants.length;
-              document.getElementById('ownerRemainder').style.display =
-                'inline-flex';
+              document.getElementById('participants').textContent = event.participants.length;
+              document.getElementById('ownerRemainder').style.display = 'inline-flex';
               if (!event.completed) {
-                document.getElementById('finishEventButton').style.display =
-                  'flex';
-
-                document
-                  .getElementById('finishEventButton')
-                  .addEventListener('click', async () => {
-                    try {
-                      const finishResponse = await fetch(`/api/event/finish`, {
-                        method: 'POST',
-                        credentials: 'include',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ eventId }),
-                      });
-                      const finishResult = await finishResponse.json();
-
-                      if (finishResponse.ok) {
-                        alert('Свято успішно завершено!');
-                        window.location.reload();
-                      } else {
-                        alert(
-                          finishResult.message || 'Помилка завершення свята'
-                        );
-                      }
-                    } catch (error) {
-                      console.error('Помилка завершення:', error);
-                      alert('Сталася помилка. Спробуйте ще раз пізніше.');
-                    }
-                  });
+                const finBtn = document.getElementById('finishEventButton');
+                finBtn.style.display = 'flex';
+                finBtn.addEventListener('click', async () => {
+                  try {
+                    const fr = await fetch('/api/event/finish', {
+                      method: 'POST', credentials: 'include',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ eventId }),
+                    });
+                    const res = await fr.json();
+                    if (fr.ok) { alert('Свято успішно завершено!'); window.location.reload(); }
+                    else alert(res.message || 'Помилка завершення свята');
+                  } catch (e) { console.error(e); alert('Сталася помилка.'); }
+                });
               }
             }
 
-            const participant = event.participants?.find(
-              (p) => p.userId === user._id
-            );
+            const participant = event.participants?.find(p => p.userId === user._id);
             if (event.completed) {
               if (!participant) {
-                document.getElementById(
-                  'notParticipantFinished'
-                ).style.display = 'block';
+                document.getElementById('notParticipantFinished').style.display = 'block';
               } else {
-                const pair = event.pairs.find((p) => p.giver === user._id);
+                const pair     = event.pairs.find(p => p.giver === user._id);
                 const receiver = await fetchUserById(pair.receiver);
-                document.getElementById('participantFinished').style.display =
-                  'block';
-                const receiverParticipant = event.participants?.find(
-                  (p) => p.userId === receiver._id
-                );
-                document.getElementById('giftRecipient').textContent = pair
-                  ? receiver.username
-                  : 'Невідомо';
-                document.getElementById('giftWish').textContent = pair
-                  ? receiverParticipant.wishes
-                  : 'Невідомо';
+                document.getElementById('participantFinished').style.display = 'block';
+                const receiverParticipant = event.participants?.find(p => p.userId === receiver._id);
+                document.getElementById('giftRecipient').textContent = pair ? receiver.username : 'Невідомо';
+                document.getElementById('giftWish').textContent      = pair ? receiverParticipant.wishes : 'Невідомо';
               }
             } else if (!participant) {
               document.getElementById('notParticipant').style.display = 'block';
             } else {
-              document.getElementById('participantActive').style.display =
-                'block';
+              document.getElementById('participantActive').style.display = 'block';
             }
           } else {
             alert(event.message || 'Помилка завантаження свята.');
             window.location.href = '/';
           }
         } catch (error) {
-          console.error('Помилка завантаження:', error);
+          console.error(error);
           alert('Сталася помилка. Спробуйте ще раз пізніше.');
           window.location.href = '/';
         }
       });
 
-      document
-        .getElementById('participateForm')
-        ?.addEventListener('submit', async function (event) {
-          event.preventDefault();
-          const wishes = document.getElementById('wishes').value;
-          const eventId = new URLSearchParams(window.location.search).get('id');
+      document.getElementById('participateForm')?.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const wishes  = buildWishes();
+        const eventId = new URLSearchParams(window.location.search).get('id');
 
-          try {
-            const response = await fetch(`/api/event/participate`, {
-              method: 'POST',
-              credentials: 'include',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ userId: user._id, eventId, wishes }),
-            });
-            const result = await response.json();
-            if (response.ok) {
-              alert(result.message);
-              window.location.reload();
-            } else {
-              alert(result.message || 'Помилка участі у святі');
-            }
-          } catch (error) {
-            console.error('Помилка участі:', error);
-            alert('Сталася помилка. Спробуйте ще раз пізніше.');
-          }
-        });
+        try {
+          const response = await fetch('/api/event/participate', {
+            method: 'POST', credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: user._id, eventId, wishes }),
+          });
+          const result = await response.json();
+          if (response.ok) { alert(result.message); window.location.reload(); }
+          else alert(result.message || 'Помилка участі у святі');
+        } catch (error) {
+          console.error(error);
+          alert('Сталася помилка. Спробуйте ще раз пізніше.');
+        }
+      });
     </script>
   </body>
 </html>
